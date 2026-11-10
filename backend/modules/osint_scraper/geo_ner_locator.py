@@ -37,6 +37,7 @@ LANDMARK_GAZETTEER = {
     "mundakkai": {"lat": 11.5360, "lon": 76.1420, "district": "IN-KL-WAY", "name": "Mundakkai Town"},
     "joshimath": {"lat": 30.5564, "lon": 79.5658, "district": "IN-UT-CHA", "name": "Joshimath Badrinath Road"},
     "aluva": {"lat": 10.1076, "lon": 76.3516, "district": "IN-KL-EKM", "name": "Aluva Manappuram Temple"},
+    "marine drive": {"lat": 18.9432, "lon": 72.8234, "district": "IN-MH-MUM", "name": "Marine Drive Promenade, Mumbai"},
     "dadar": {"lat": 19.0178, "lon": 72.8478, "district": "IN-MH-MUM", "name": "Dadar TT Circle"},
     "kurla": {"lat": 19.0657, "lon": 72.8797, "district": "IN-MH-MUM", "name": "Kurla Mithi River"},
     "salt lake": {"lat": 22.5800, "lon": 88.4200, "district": "IN-WB-KOL", "name": "Salt Lake Sector V"},
