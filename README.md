@@ -446,3 +446,15 @@ Distributed under the MIT License. Built for sovereign disaster resilience and r
 2. **Zero Broken Image Icons:** The `<img>` tags for `docs/assets/*.png` include `onerror="this.style.display='none'"`—meaning if you haven't uploaded screenshots to `docs/assets/` yet, they remain cleanly hidden, and the moment you drop screenshots into `docs/assets/`, they appear automatically.
 
 ```
+## Screenshots
+<img width="906" height="326" alt="Screenshot 2026-11-10 172750" src="https://github.com/user-attachments/assets/d7970508-670c-4bcd-91ba-f966b40a1716" />
+<img width="905" height="546" alt="Screenshot 2026-11-10 173356" src="https://github.com/user-attachments/assets/aa8cc9ac-6dcd-4f68-a7aa-eff365f1e1c9" />
+<img width="897" height="642" alt="Screenshot 2026-11-10 172611" src="https://github.com/user-attachments/assets/0e0116df-32f5-4739-ae1a-effb9de2a7a3" />
+<img width="1520" height="862" alt="Screenshot 2026-11-11 021605" src="https://github.com/user-attachments/assets/db4a836d-e375-4af7-8c22-5f418c2acbb7" />
+<img width="1534" height="862" alt="Screenshot 2026-11-11 003304" src="https://github.com/user-attachments/assets/3c692796-ca71-41fe-8fd5-c36d15bfbe53" />
+<img width="1917" height="1078" alt="Screenshot 2026-11-11 021331" src="https://github.com/user-attachments/assets/ee2965dc-7a3e-40cf-a357-eb72adc71713" />
+<img width="1915" height="1078" alt="Screenshot 2026-11-11 003012" src="https://github.com/user-attachments/assets/c91e0af6-0df0-4d0f-a87d-446b4244c0cb" />
+
+
+## Demo video
+https://www.youtube.com/watch?v=eJ6RobunlWE
