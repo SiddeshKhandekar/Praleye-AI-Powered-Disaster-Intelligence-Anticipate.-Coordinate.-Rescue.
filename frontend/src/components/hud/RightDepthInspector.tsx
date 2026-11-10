@@ -105,23 +105,32 @@ export const RightDepthInspector: React.FC = () => {
         {/* TAB 1: DISTRICT RISK METRICS */}
         {activeTab === 'METRICS' && (
           <div>
-            {selectedDistrict ? (
+            {effectiveDistrict ? (
               <div className="space-y-3">
+                {/* Timeline Phase Indicator Pill in Inspector */}
+                <div className={`p-2 rounded-lg border flex items-center justify-between text-[10px] font-mono font-bold ${timelineInfo.stageBadgeColor}`}>
+                  <span className="flex items-center gap-1">
+                    <span>{timelineInfo.badgeIcon}</span>
+                    <span>{timelineInfo.stageLabel}</span>
+                  </span>
+                  <span>{timelineInfo.formattedDate}</span>
+                </div>
+
                 <div className="flex items-center justify-between pb-2 border-b border-white/10">
-                  <h3 className="text-sm font-bold text-white">{selectedDistrict.properties.name}</h3>
-                  <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${selectedDistrict.properties.composite_risk_level === 'CRITICAL' ? 'bg-red-500/20 text-red-400 border border-red-500/30' :
-                      selectedDistrict.properties.composite_risk_level === 'HIGH' ? 'bg-orange-500/20 text-orange-400' :
-                        selectedDistrict.properties.composite_risk_level === 'MODERATE' ? 'bg-amber-500/20 text-amber-400' : 'bg-emerald-500/20 text-emerald-400'
+                  <h3 className="text-sm font-bold text-white">{effectiveDistrict.properties.name}</h3>
+                  <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${effectiveDistrict.properties.composite_risk_level === 'CRITICAL' ? 'bg-red-500/20 text-red-400 border border-red-500/30' :
+                      effectiveDistrict.properties.composite_risk_level === 'HIGH' ? 'bg-orange-500/20 text-orange-400' :
+                        effectiveDistrict.properties.composite_risk_level === 'MODERATE' ? 'bg-amber-500/20 text-amber-400' : 'bg-emerald-500/20 text-emerald-400'
                     }`}>
-                    {selectedDistrict.properties.composite_risk_level}
+                    {effectiveDistrict.properties.composite_risk_level}
                   </span>
                 </div>
 
                 <div className="text-slate-300 space-y-1">
-                  <div>State: <span className="text-white">{selectedDistrict.properties.state}</span></div>
-                  <div>Population: <span className="text-white">{selectedDistrict.properties.population.toLocaleString()}</span></div>
-                  <div>Elevation: <span className="text-white">{selectedDistrict.properties.elevation_m}m</span></div>
-                  <div>Terrain Slope: <span className="text-white">{selectedDistrict.properties.slope_deg}°</span></div>
+                  <div>State: <span className="text-white">{effectiveDistrict.properties.state}</span></div>
+                  <div>Population: <span className="text-white">{effectiveDistrict.properties.population.toLocaleString()}</span></div>
+                  <div>Elevation: <span className="text-white">{effectiveDistrict.properties.elevation_m}m</span></div>
+                  <div>Terrain Slope: <span className="text-white">{effectiveDistrict.properties.slope_deg}°</span></div>
                 </div>
 
                 {/* Mathematical Hazard Probabilities */}
@@ -131,40 +140,40 @@ export const RightDepthInspector: React.FC = () => {
                   <div>
                     <div className="flex justify-between text-[10px] text-slate-400 mb-0.5">
                       <span>Flood (P_flood)</span>
-                      <span>{selectedDistrict.properties.probabilities.p_flood}%</span>
+                      <span>{effectiveDistrict.properties.probabilities.p_flood}%</span>
                     </div>
                     <div className="w-full bg-slate-800 h-1.5 rounded overflow-hidden">
-                      <div className="bg-cyan-500 h-full" style={{ width: `${selectedDistrict.properties.probabilities.p_flood}%` }}></div>
+                      <div className="bg-cyan-500 h-full" style={{ width: `${effectiveDistrict.properties.probabilities.p_flood}%` }}></div>
                     </div>
                   </div>
 
                   <div>
                     <div className="flex justify-between text-[10px] text-slate-400 mb-0.5">
                       <span>Landslide (P_landslide)</span>
-                      <span>{selectedDistrict.properties.probabilities.p_landslide}%</span>
+                      <span>{effectiveDistrict.properties.probabilities.p_landslide}%</span>
                     </div>
                     <div className="w-full bg-slate-800 h-1.5 rounded overflow-hidden">
-                      <div className="bg-amber-500 h-full" style={{ width: `${selectedDistrict.properties.probabilities.p_landslide}%` }}></div>
+                      <div className="bg-amber-500 h-full" style={{ width: `${effectiveDistrict.properties.probabilities.p_landslide}%` }}></div>
                     </div>
                   </div>
 
                   <div>
                     <div className="flex justify-between text-[10px] text-slate-400 mb-0.5">
                       <span>Cyclone Surge (P_cyclone)</span>
-                      <span>{selectedDistrict.properties.probabilities.p_cyclone}%</span>
+                      <span>{effectiveDistrict.properties.probabilities.p_cyclone}%</span>
                     </div>
                     <div className="w-full bg-slate-800 h-1.5 rounded overflow-hidden">
-                      <div className="bg-indigo-500 h-full" style={{ width: `${selectedDistrict.properties.probabilities.p_cyclone}%` }}></div>
+                      <div className="bg-indigo-500 h-full" style={{ width: `${effectiveDistrict.properties.probabilities.p_cyclone}%` }}></div>
                     </div>
                   </div>
 
                   <div>
                     <div className="flex justify-between text-[10px] text-slate-400 mb-0.5">
                       <span>Heat Mortality (P_heat)</span>
-                      <span>{selectedDistrict.properties.probabilities.p_heat}%</span>
+                      <span>{effectiveDistrict.properties.probabilities.p_heat}%</span>
                     </div>
                     <div className="w-full bg-slate-800 h-1.5 rounded overflow-hidden">
-                      <div className="bg-orange-500 h-full" style={{ width: `${selectedDistrict.properties.probabilities.p_heat}%` }}></div>
+                      <div className="bg-orange-500 h-full" style={{ width: `${effectiveDistrict.properties.probabilities.p_heat}%` }}></div>
                     </div>
                   </div>
                 </div>
@@ -173,13 +182,13 @@ export const RightDepthInspector: React.FC = () => {
                 <div className="bg-obsidian-950/80 p-3 rounded border border-white/10 space-y-1.5 text-slate-300">
                   <div className="flex items-center justify-between text-[11px] font-bold text-slate-400">
                     <span>ATMOSPHERIC SENSOR TELEMETRY</span>
-                    <span className="text-cyan-400">{selectedDistrict.properties.weather_telemetry.weather_icon || '⛅'} {selectedDistrict.properties.weather_telemetry.weather_condition || 'Active'}</span>
+                    <span className="text-cyan-400">{effectiveDistrict.properties.weather_telemetry.weather_icon || '⛅'} {effectiveDistrict.properties.weather_telemetry.weather_condition || 'Active'}</span>
                   </div>
-                  <div>Ambient Temp: <span className="text-white font-bold">{selectedDistrict.properties.weather_telemetry.temperature_c}°C</span> <span className="text-slate-400 text-[10px]">(Feels {selectedDistrict.properties.weather_telemetry.apparent_temperature_c || selectedDistrict.properties.weather_telemetry.temperature_c}°C)</span></div>
-                  <div>Precipitation (24h / 72h): <span className="text-cyan-300 font-bold">{selectedDistrict.properties.weather_telemetry.rain_24h_mm} mm</span> / <span className="text-cyan-400">{selectedDistrict.properties.weather_telemetry.rain_72h_mm} mm</span></div>
-                  <div>Soil Moisture: <span className="text-emerald-300 font-bold">{selectedDistrict.properties.weather_telemetry.soil_moisture} m³/m³</span></div>
-                  <div>Wind & Max Gusts: <span className="text-white">{selectedDistrict.properties.weather_telemetry.wind_speed_kmh} / {selectedDistrict.properties.weather_telemetry.wind_gust_kmh} km/h</span></div>
-                  <div>Relative Humidity: <span className="text-white">{selectedDistrict.properties.weather_telemetry.relative_humidity}%</span> | Pressure: <span className="text-white">{selectedDistrict.properties.weather_telemetry.pressure_msl_hpa} hPa</span></div>
+                  <div>Ambient Temp: <span className="text-white font-bold">{effectiveDistrict.properties.weather_telemetry.temperature_c}°C</span> <span className="text-slate-400 text-[10px]">(Feels {effectiveDistrict.properties.weather_telemetry.apparent_temperature_c || effectiveDistrict.properties.weather_telemetry.temperature_c}°C)</span></div>
+                  <div>Precipitation (24h / 72h): <span className="text-cyan-300 font-bold">{effectiveDistrict.properties.weather_telemetry.rain_24h_mm} mm</span> / <span className="text-cyan-400">{effectiveDistrict.properties.weather_telemetry.rain_72h_mm} mm</span></div>
+                  <div>Soil Moisture: <span className="text-emerald-300 font-bold">{effectiveDistrict.properties.weather_telemetry.soil_moisture} m³/m³</span></div>
+                  <div>Wind & Max Gusts: <span className="text-white">{effectiveDistrict.properties.weather_telemetry.wind_speed_kmh} / {effectiveDistrict.properties.weather_telemetry.wind_gust_kmh} km/h</span></div>
+                  <div>Relative Humidity: <span className="text-white">{effectiveDistrict.properties.weather_telemetry.relative_humidity}%</span> | Pressure: <span className="text-white">{effectiveDistrict.properties.weather_telemetry.pressure_msl_hpa} hPa</span></div>
                 </div>
 
                 {/* Inspect City Intelligence Button */}
@@ -201,12 +210,21 @@ export const RightDepthInspector: React.FC = () => {
         {/* TAB 2: LIVE OSINT FEED */}
         {activeTab === 'OSINT' && (
           <div className="space-y-3">
+            {/* Timeline Phase Alert */}
+            <div className={`p-2 rounded-lg border flex items-center justify-between text-[10px] font-mono font-bold ${timelineInfo.stageBadgeColor}`}>
+              <span className="flex items-center gap-1">
+                <span>{timelineInfo.badgeIcon}</span>
+                <span>{timelineInfo.stageLabel}</span>
+              </span>
+              <span>{effectiveOsintReports.length} HOTSPOTS</span>
+            </div>
+
             {dispatchStatus && (
               <div className="bg-emerald-500/20 border border-emerald-500/40 p-2 rounded text-emerald-300 text-[11px]">
                 {dispatchStatus}
               </div>
             )}
-            {osintReports.map(report => (
+            {effectiveOsintReports.map(report => (
               <div
                 key={report.id}
                 onClick={() => {

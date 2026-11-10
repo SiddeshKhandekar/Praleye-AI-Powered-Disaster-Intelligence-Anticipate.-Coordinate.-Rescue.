@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { usePraleyeStore } from '../../store/usePraleyeStore';
 import {
   CloudRain,
@@ -14,8 +14,12 @@ import {
   Home,
   X,
   ExternalLink,
-  Radio
+  Radio,
+  Calendar,
+  Clock,
+  Sparkles
 } from 'lucide-react';
+import { interpolateDistrictData, getTimelineState } from '../../services/timelineTransitionService';
 
 export const CityWeatherDetailModal: React.FC = () => {
   const {
@@ -26,12 +30,19 @@ export const CityWeatherDetailModal: React.FC = () => {
     safeZones,
     forces,
     setAlertModalOpen,
-    setTriageModalOpen
+    setTriageModalOpen,
+    timeOffsetHours
   } = usePraleyeStore();
 
-  if (!isCityDetailModalOpen || !selectedDistrict) return null;
+  const timelineInfo = getTimelineState(timeOffsetHours);
 
-  const d = selectedDistrict;
+  const effectiveDistrict = useMemo(() => {
+    return selectedDistrict ? interpolateDistrictData(selectedDistrict, timeOffsetHours) : null;
+  }, [selectedDistrict, timeOffsetHours]);
+
+  if (!isCityDetailModalOpen || !effectiveDistrict) return null;
+
+  const d = effectiveDistrict;
   const p = d.properties;
   const w = p.weather_telemetry;
 
@@ -77,6 +88,11 @@ export const CityWeatherDetailModal: React.FC = () => {
                   }}
                 >
                   {p.composite_risk_level} THREAT
+                </span>
+                <span className={`px-2 py-0.5 rounded text-[10px] font-bold border flex items-center gap-1 ${timelineInfo.stageBadgeColor}`}>
+                  <span>{timelineInfo.badgeIcon}</span>
+                  <span>{timelineInfo.stageLabel}</span>
+                  <span className="opacity-75 font-normal">({timelineInfo.formattedDate})</span>
                 </span>
               </div>
               <div className="flex items-center gap-3 text-[10px] text-slate-400 pt-0.5">

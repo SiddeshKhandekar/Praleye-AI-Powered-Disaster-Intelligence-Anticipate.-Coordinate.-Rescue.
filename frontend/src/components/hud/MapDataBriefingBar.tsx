@@ -101,7 +101,6 @@ export const MapDataBriefingBar: React.FC = () => {
           <span>{timelineInfo.stageLabel}</span>
           <span className="opacity-80 font-normal">({timelineInfo.formattedDate})</span>
         </div>
-        </div>
 
         {/* Priority Hotspot Quick-Jump Pills */}
         <div className="flex items-center gap-1.5">
