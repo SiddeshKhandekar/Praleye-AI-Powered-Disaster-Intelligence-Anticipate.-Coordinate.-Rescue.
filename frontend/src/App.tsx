@@ -8,6 +8,9 @@ import { BottomModeSwitcher } from './components/hud/BottomModeSwitcher';
 import { LeftCategoryDock } from './components/hud/LeftCategoryDock';
 import { RightDepthInspector } from './components/hud/RightDepthInspector';
 import { TacticalMapCanvas } from './components/map/TacticalMapCanvas';
+import { MapDataBriefingBar } from './components/hud/MapDataBriefingBar';
+import { MapLegendControl } from './components/hud/MapLegendControl';
+import { MapHoverCard } from './components/map/MapHoverCard';
 
 // Dashboards
 import { AdminControlDashboard } from './components/dashboards/AdminControlDashboard';
