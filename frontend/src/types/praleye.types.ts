@@ -61,6 +61,7 @@ export interface DistrictHazardFeature {
     composite_risk_level: 'LOW' | 'MODERATE' | 'HIGH' | 'CRITICAL';
     weather_telemetry: {
       temperature_c: number;
+      apparent_temperature_c?: number;
       relative_humidity: number;
       rain_24h_mm: number;
       rain_72h_mm: number;
@@ -68,6 +69,11 @@ export interface DistrictHazardFeature {
       wind_speed_kmh: number;
       wind_gust_kmh: number;
       pressure_msl_hpa: number;
+      cloud_cover_pct?: number;
+      weather_code?: number;
+      weather_condition?: string;
+      weather_icon?: string;
+      status?: string;
     };
   };
 }

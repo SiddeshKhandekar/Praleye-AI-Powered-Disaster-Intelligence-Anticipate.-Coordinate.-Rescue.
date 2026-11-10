@@ -74,6 +74,8 @@ interface PraleyeStore {
   setSitrepModalOpen: (open: boolean) => void;
   isCaseStudiesModalOpen: boolean;
   setCaseStudiesModalOpen: (open: boolean) => void;
+  isCityDetailModalOpen: boolean;
+  setCityDetailModalOpen: (open: boolean) => void;
 }
 
 export const usePraleyeStore = create<PraleyeStore>((set) => ({
