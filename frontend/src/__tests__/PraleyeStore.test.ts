@@ -10,7 +10,8 @@ describe('usePraleyeStore HUD State Management', () => {
       timeOffsetHours: 0,
       vizMode: 'HYBRID',
       hoveredEntity: null,
-      isCityDetailModalOpen: false
+      isCityDetailModalOpen: false,
+      isGovtAnalyticsOpen: false
     });
   });
 
@@ -80,5 +81,16 @@ describe('usePraleyeStore HUD State Management', () => {
 
     store.setCityDetailModalOpen(false);
     expect(usePraleyeStore.getState().isCityDetailModalOpen).toBe(false);
+  });
+
+  it('should toggle government analytics modal open state', () => {
+    const store = usePraleyeStore.getState();
+    expect(store.isGovtAnalyticsOpen).toBe(false);
+
+    store.setGovtAnalyticsOpen(true);
+    expect(usePraleyeStore.getState().isGovtAnalyticsOpen).toBe(true);
+
+    store.setGovtAnalyticsOpen(false);
+    expect(usePraleyeStore.getState().isGovtAnalyticsOpen).toBe(false);
   });
 });

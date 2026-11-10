@@ -24,6 +24,8 @@ import { MilitarySitrepModal } from './components/modals/MilitarySitrepModal';
 import { DisasterCaseStudiesModal } from './components/modals/DisasterCaseStudiesModal';
 import { CityWeatherDetailModal } from './components/modals/CityWeatherDetailModal';
 import { MicroLocationDetailModal } from './components/modals/MicroLocationDetailModal';
+import { GovtAnalyticsCornerButton } from './components/hud/GovtAnalyticsCornerButton';
+import { GovtExecutiveAnalyticsModal } from './components/dashboards/GovtExecutiveAnalyticsModal';
 
 export const App: React.FC = () => {
   const { 
@@ -80,8 +82,10 @@ export const App: React.FC = () => {
 
   return (
     <div className="relative w-screen h-screen overflow-hidden bg-obsidian-950 text-slate-100 font-sans">
-      {/* 100vw x 100vh Full-Bleed Map Canvas */}
-      <TacticalMapCanvas />
+      {/* 100vw x 100vh Full-Bleed Map Canvas - Isolated to Tactical Map View */}
+      <div className={`absolute inset-0 w-full h-full ${activeView === 'COMMAND_HUD' ? 'block' : 'invisible pointer-events-none'}`}>
+        <TacticalMapCanvas />
+      </div>
 
       {/* Map HUD Overlays - Visible ONLY in Tactical Map View */}
       {activeView === 'COMMAND_HUD' && (
@@ -98,10 +102,16 @@ export const App: React.FC = () => {
       <LeftCategoryDock />
       {activeView === 'COMMAND_HUD' && <RightDepthInspector />}
 
+      {/* Bottom-Left Corner Executive Analytics & Broadcast Toggle Button */}
+      <GovtAnalyticsCornerButton />
+
       {/* Multi-Role Overlay Dashboards */}
       {activeView === 'SUPER_ADMIN' && <AdminControlDashboard />}
       {activeView === 'GOV_FORCES' && <GovForcesDashboard />}
       {activeView === 'HOSPITAL_NETWORK' && <HospitalCommandView />}
+
+      {/* All-India Executive Disaster Analytics & Live Broadcast Hub */}
+      <GovtExecutiveAnalyticsModal />
 
       {/* Interactive Command Modals */}
       <EmergencyBedAssignModal />

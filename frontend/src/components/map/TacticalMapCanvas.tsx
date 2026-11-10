@@ -394,8 +394,6 @@ export const TacticalMapCanvas: React.FC = () => {
       bearing: viewport.bearing
     });
 
-    map.current.addControl(new maplibregl.NavigationControl({ showCompass: true }), 'bottom-left');
-
     map.current.on('load', () => {
       ensureHeatmapLayers();
     });
@@ -777,6 +775,58 @@ export const TacticalMapCanvas: React.FC = () => {
   return (
     <div className="absolute inset-0 w-full h-full">
       <div ref={mapContainer} className="w-full h-full" />
+
+      {/* High-Fidelity Tactical Map Navigation & Camera Controls */}
+      <div className="absolute bottom-24 right-4 z-20 flex flex-col items-center gap-1.5 select-none font-mono text-xs">
+        <button
+          onClick={() => map.current?.zoomIn()}
+          className="w-8 h-8 rounded-lg tactical-glass-elevated border border-slate-700/80 hover:border-cyan-400 text-slate-200 hover:text-cyan-300 font-bold text-base flex items-center justify-center transition-all shadow-xl active:scale-95"
+          title="Zoom In (+)"
+        >
+          +
+        </button>
+        <button
+          onClick={() => map.current?.zoomOut()}
+          className="w-8 h-8 rounded-lg tactical-glass-elevated border border-slate-700/80 hover:border-cyan-400 text-slate-200 hover:text-cyan-300 font-bold text-base flex items-center justify-center transition-all shadow-xl active:scale-95"
+          title="Zoom Out (−)"
+        >
+          −
+        </button>
+        <button
+          onClick={() => {
+            if (map.current) {
+              const currentPitch = map.current.getPitch();
+              map.current.easeTo({ pitch: currentPitch > 25 ? 0 : 50, duration: 800 });
+            }
+          }}
+          className="w-8 h-8 rounded-lg tactical-glass-elevated border border-slate-700/80 hover:border-cyan-400 text-slate-200 hover:text-cyan-300 text-xs flex items-center justify-center transition-all shadow-xl active:scale-95"
+          title="Toggle 3D Terrain Pitch / 2D Flat View"
+        >
+          📐
+        </button>
+        <button
+          onClick={() => map.current?.resetNorthPitch()}
+          className="w-8 h-8 rounded-lg tactical-glass-elevated border border-slate-700/80 hover:border-cyan-400 text-slate-200 hover:text-cyan-300 text-xs flex items-center justify-center transition-all shadow-xl active:scale-95"
+          title="Reset Camera Bearing to True North"
+        >
+          🧭
+        </button>
+        <button
+          onClick={() =>
+            map.current?.flyTo({
+              center: [78.9629, 21.5937],
+              zoom: 4.8,
+              pitch: 20,
+              bearing: 0,
+              duration: 1200
+            })
+          }
+          className="w-8 h-8 rounded-lg tactical-glass-elevated border border-slate-700/80 hover:border-cyan-400 text-slate-200 hover:text-cyan-300 text-xs flex items-center justify-center transition-all shadow-xl active:scale-95"
+          title="Reset to All-India View"
+        >
+          🇮🇳
+        </button>
+      </div>
     </div>
   );
 };

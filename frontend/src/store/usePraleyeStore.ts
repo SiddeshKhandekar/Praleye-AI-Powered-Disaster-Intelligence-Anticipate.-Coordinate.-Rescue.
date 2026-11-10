@@ -78,6 +78,8 @@ interface PraleyeStore {
   setCaseStudiesModalOpen: (open: boolean) => void;
   isCityDetailModalOpen: boolean;
   setCityDetailModalOpen: (open: boolean) => void;
+  isGovtAnalyticsOpen: boolean;
+  setGovtAnalyticsOpen: (open: boolean) => void;
 }
 
 export const usePraleyeStore = create<PraleyeStore>((set) => ({
@@ -154,4 +156,6 @@ export const usePraleyeStore = create<PraleyeStore>((set) => ({
   setCaseStudiesModalOpen: (isCaseStudiesModalOpen) => set({ isCaseStudiesModalOpen }),
   isCityDetailModalOpen: false,
   setCityDetailModalOpen: (isCityDetailModalOpen) => set({ isCityDetailModalOpen }),
+  isGovtAnalyticsOpen: false,
+  setGovtAnalyticsOpen: (isGovtAnalyticsOpen) => set({ isGovtAnalyticsOpen }),
 }));
