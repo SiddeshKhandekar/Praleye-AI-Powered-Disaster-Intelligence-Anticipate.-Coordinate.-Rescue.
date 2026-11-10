@@ -489,9 +489,13 @@ export const TacticalMapCanvas: React.FC = () => {
 
         const w = d.properties.weather_telemetry;
 
-        if (isZoomedIntoCity) {
+        // In HYBRID mode when zoomed into city (currentZoom >= 7.0), render expanded City Weather Card
+        // In PINS mode, keep the sleek tactical pin dot/pill at all zoom levels so it never blocks the map
+        const showExpandedCityCard = vizMode === 'HYBRID' && isZoomedIntoCity;
+
+        if (showExpandedCityCard) {
           // ========================================================
-          // ZOOMED INTO CITY VIEW: Expanded Interactive City Weather Card
+          // HYBRID MODE (ZOOMED INTO CITY): Expanded Interactive City Weather Card
           // ========================================================
           el.className = 'group relative flex flex-col items-center cursor-pointer select-none';
           el.innerHTML = `

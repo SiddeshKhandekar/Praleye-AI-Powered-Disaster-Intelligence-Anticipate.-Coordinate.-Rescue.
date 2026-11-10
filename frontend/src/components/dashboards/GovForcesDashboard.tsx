@@ -7,7 +7,7 @@ export const GovForcesDashboard: React.FC = () => {
   const { forces, osintReports } = usePraleyeStore();
 
   return (
-    <div className="absolute top-14 bottom-16 left-16 right-0 bg-obsidian-950/95 overflow-y-auto p-6 font-mono text-xs z-10 space-y-6">
+    <div className="absolute top-14 bottom-0 left-16 right-0 bg-obsidian-950 overflow-y-auto p-6 font-mono text-xs z-30 space-y-6">
       <div className="flex items-center justify-between pb-3 border-b border-white/10">
         <div>
           <h2 className="text-lg font-bold text-white flex items-center space-x-2">
