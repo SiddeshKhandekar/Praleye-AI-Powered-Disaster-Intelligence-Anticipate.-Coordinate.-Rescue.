@@ -8,7 +8,9 @@ import {
   OsintReport,
   HospitalNode,
   SafeZoneNode,
-  ForceUnit
+  ForceUnit,
+  MapVizMode,
+  HoveredEntity
 } from '../types/praleye.types';
 
 interface PraleyeStore {
@@ -17,6 +19,12 @@ interface PraleyeStore {
   setMode: (mode: OperationalMode) => void;
   activeView: DashboardView;
   setActiveView: (view: DashboardView) => void;
+
+  // Visualization Mode (PINS / HEATMAP / HYBRID)
+  vizMode: MapVizMode;
+  setVizMode: (vizMode: MapVizMode) => void;
+  hoveredEntity: HoveredEntity | null;
+  setHoveredEntity: (entity: HoveredEntity | null) => void;
 
   // Base Map Theme
   mapTheme: MapStyleTheme;
@@ -73,6 +81,11 @@ export const usePraleyeStore = create<PraleyeStore>((set) => ({
   setMode: (mode) => set({ mode }),
   activeView: 'COMMAND_HUD',
   setActiveView: (activeView) => set({ activeView }),
+
+  vizMode: 'HYBRID',
+  setVizMode: (vizMode) => set({ vizMode }),
+  hoveredEntity: null,
+  setHoveredEntity: (hoveredEntity) => set({ hoveredEntity }),
 
   mapTheme: 'STADIA_ALIDADE_SMOOTH_DARK',
   setMapTheme: (mapTheme) => set({ mapTheme }),

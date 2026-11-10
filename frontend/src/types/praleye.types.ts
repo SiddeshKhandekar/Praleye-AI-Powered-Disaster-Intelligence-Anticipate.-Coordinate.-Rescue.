@@ -19,6 +19,17 @@ export type DashboardView =
   | 'GOV_FORCES'
   | 'HOSPITAL_NETWORK';
 
+export type MapVizMode = 'HYBRID' | 'HEATMAP' | 'PINS';
+
+export type HoveredEntityType = 'DISTRICT' | 'SOS' | 'HOSPITAL' | 'SHELTER' | 'FORCE';
+
+export interface HoveredEntity {
+  type: HoveredEntityType;
+  data: any;
+  x: number;
+  y: number;
+}
+
 export type HazardLayerType =
   | 'WEATHER_RADAR'
   | 'FLOOD_GRID'
