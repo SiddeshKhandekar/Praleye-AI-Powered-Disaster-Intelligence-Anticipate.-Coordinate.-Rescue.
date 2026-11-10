@@ -84,11 +84,10 @@ export const AdminControlDashboard: React.FC = () => {
                   <td className="p-3 font-bold text-white">{d.properties.name}</td>
                   <td className="p-3">{d.properties.state}</td>
                   <td className="p-3">
-                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                      d.properties.composite_risk_level === 'CRITICAL' ? 'bg-red-500/20 text-red-400 border border-red-500/30' :
-                      d.properties.composite_risk_level === 'HIGH' ? 'bg-orange-500/20 text-orange-400' :
-                      d.properties.composite_risk_level === 'MODERATE' ? 'bg-amber-500/20 text-amber-400' : 'bg-emerald-500/20 text-emerald-400'
-                    }`}>
+                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${d.properties.composite_risk_level === 'CRITICAL' ? 'bg-red-500/20 text-red-400 border border-red-500/30' :
+                        d.properties.composite_risk_level === 'HIGH' ? 'bg-orange-500/20 text-orange-400' :
+                          d.properties.composite_risk_level === 'MODERATE' ? 'bg-amber-500/20 text-amber-400' : 'bg-emerald-500/20 text-emerald-400'
+                      }`}>
                       {d.properties.composite_risk_level}
                     </span>
                   </td>
@@ -106,4 +105,3 @@ export const AdminControlDashboard: React.FC = () => {
     </div>
   );
 };
-

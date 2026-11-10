@@ -1,11 +1,11 @@
 import React from 'react';
-import { 
-  CloudLightning, 
-  Radio, 
-  ShieldCheck, 
-  Stethoscope, 
-  Play, 
-  RotateCcw 
+import {
+  CloudLightning,
+  Radio,
+  ShieldCheck,
+  Stethoscope,
+  Play,
+  RotateCcw
 } from 'lucide-react';
 import { usePraleyeStore } from '../../store/usePraleyeStore';
 import { OperationalMode } from '../../types/praleye.types';
@@ -32,11 +32,10 @@ export const BottomModeSwitcher: React.FC = () => {
               key={m.id}
               data-testid={`mode-btn-${m.id}`}
               onClick={() => setMode(m.id)}
-              className={`flex items-center space-x-2 px-3 py-1.5 rounded text-xs font-semibold tracking-wider transition-all ${
-                isActive
+              className={`flex items-center space-x-2 px-3 py-1.5 rounded text-xs font-semibold tracking-wider transition-all ${isActive
                   ? 'bg-white/10 border border-white/30 text-white shadow-lg shadow-black/40'
                   : 'bg-white/5 border border-white/5 text-slate-400 hover:bg-white/10 hover:text-slate-200'
-              }`}
+                }`}
             >
               <Icon className={`w-4 h-4 ${isActive ? m.color : 'text-slate-400'}`} />
               <span className="hidden sm:inline">{m.label}</span>
@@ -69,4 +68,3 @@ export const BottomModeSwitcher: React.FC = () => {
     </footer>
   );
 };
-
