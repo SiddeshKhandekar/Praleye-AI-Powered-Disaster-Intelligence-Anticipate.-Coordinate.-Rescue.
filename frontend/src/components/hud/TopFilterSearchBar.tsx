@@ -10,11 +10,20 @@ import {
   Users,
   Globe,
   Mic,
-  MicOff
+  MicOff,
+  Layers
 } from 'lucide-react';
 import { usePraleyeStore } from '../../store/usePraleyeStore';
-import { HazardLayerType } from '../../types/praleye.types';
+import { HazardLayerType, MapStyleTheme } from '../../types/praleye.types';
 import { VoiceCommandService } from '../../services/voiceCommandService';
+
+const MAP_THEMES: { id: MapStyleTheme; label: string }[] = [
+  { id: 'STADIA_ALIDADE_SMOOTH_DARK', label: 'Stadia Dark' },
+  { id: 'STADIA_OUTDOORS', label: 'Stadia Outdoors' },
+  { id: 'STADIA_OSM_BRIGHT', label: 'Stadia Bright' },
+  { id: 'STADIA_SATELLITE', label: 'Satellite (ArcGIS)' },
+  { id: 'CARTO_DARK_KEYLESS', label: 'OSM Free Dark' },
+];
 
 const INDIAN_LANGS = [
   { code: 'hi', label: 'हिन्दी' },
@@ -40,7 +49,9 @@ export const TopFilterSearchBar: React.FC = () => {
     setLanguage,
     setMode,
     setSitrepModalOpen,
-    setAlertModalOpen
+    setAlertModalOpen,
+    mapTheme,
+    setMapTheme
   } = usePraleyeStore();
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -151,8 +162,8 @@ export const TopFilterSearchBar: React.FC = () => {
                 key={layer.id}
                 onClick={() => toggleLayer(layer.id)}
                 className={`flex items-center space-x-1.5 px-2.5 py-1 rounded text-xs font-medium transition-all ${isActive
-                    ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
-                    : 'bg-white/5 text-slate-400 border border-white/5 hover:bg-white/10'
+                  ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
+                  : 'bg-white/5 text-slate-400 border border-white/5 hover:bg-white/10'
                   }`}
               >
                 <Icon className="w-3.5 h-3.5" />
@@ -160,6 +171,22 @@ export const TopFilterSearchBar: React.FC = () => {
               </button>
             );
           })}
+        </div>
+
+        {/* Map Theme Selector */}
+        <div className="flex items-center bg-obsidian-900 border border-white/10 rounded px-2 py-1 text-xs">
+          <Layers className="w-3.5 h-3.5 text-cyan-400 mr-1.5" />
+          <select
+            value={mapTheme}
+            onChange={(e) => setMapTheme(e.target.value as any)}
+            className="bg-transparent text-slate-300 text-xs focus:outline-none cursor-pointer"
+          >
+            {MAP_THEMES.map(t => (
+              <option key={t.id} value={t.id} className="bg-obsidian-900 text-slate-200">
+                {t.label}
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* 11-Language Selector */}
@@ -182,8 +209,8 @@ export const TopFilterSearchBar: React.FC = () => {
         <button
           onClick={toggleMic}
           className={`p-1.5 rounded border transition-colors ${isListening
-              ? 'bg-red-500/30 border-red-500 text-red-400 animate-pulse'
-              : 'bg-white/5 border-white/10 text-slate-400 hover:text-slate-200'
+            ? 'bg-red-500/30 border-red-500 text-red-400 animate-pulse'
+            : 'bg-white/5 border-white/10 text-slate-400 hover:text-slate-200'
             }`}
           title="Voice Command (11 Indian Languages)"
         >

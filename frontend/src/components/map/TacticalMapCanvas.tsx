@@ -1,6 +1,137 @@
 import React, { useEffect, useRef } from 'react';
 import maplibregl from 'maplibre-gl';
 import { usePraleyeStore } from '../../store/usePraleyeStore';
+import { MapStyleTheme } from '../../types/praleye.types';
+
+export const getMapStyle = (theme: MapStyleTheme): any => {
+  const apiKey = (import.meta as any).env?.VITE_STADIA_API_KEY || '';
+  const keyParam = apiKey ? `?api_key=${apiKey}` : '';
+
+  switch (theme) {
+    case 'STADIA_ALIDADE_SMOOTH_DARK':
+      return {
+        version: 8,
+        sources: {
+          'stadia-dark': {
+            type: 'raster',
+            tiles: [
+              `https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}@2x.png${keyParam}`
+            ],
+            tileSize: 256,
+            attribution: '&copy; Stadia Maps &copy; OpenMapTiles &copy; OpenStreetMap contributors'
+          }
+        },
+        layers: [
+          {
+            id: 'stadia-dark-tiles',
+            type: 'raster',
+            source: 'stadia-dark',
+            minzoom: 0,
+            maxzoom: 20
+          }
+        ]
+      };
+
+    case 'STADIA_OUTDOORS':
+      return {
+        version: 8,
+        sources: {
+          'stadia-outdoors': {
+            type: 'raster',
+            tiles: [
+              `https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}@2x.png${keyParam}`
+            ],
+            tileSize: 256,
+            attribution: '&copy; Stadia Maps &copy; OpenStreetMap contributors'
+          }
+        },
+        layers: [
+          {
+            id: 'stadia-outdoors-tiles',
+            type: 'raster',
+            source: 'stadia-outdoors',
+            minzoom: 0,
+            maxzoom: 20
+          }
+        ]
+      };
+
+    case 'STADIA_OSM_BRIGHT':
+      return {
+        version: 8,
+        sources: {
+          'stadia-bright': {
+            type: 'raster',
+            tiles: [
+              `https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}@2x.png${keyParam}`
+            ],
+            tileSize: 256,
+            attribution: '&copy; Stadia Maps &copy; OpenStreetMap contributors'
+          }
+        },
+        layers: [
+          {
+            id: 'stadia-bright-tiles',
+            type: 'raster',
+            source: 'stadia-bright',
+            minzoom: 0,
+            maxzoom: 20
+          }
+        ]
+      };
+
+    case 'STADIA_SATELLITE':
+    case 'ESRI_SATELLITE':
+      return {
+        version: 8,
+        sources: {
+          'satellite-tiles': {
+            type: 'raster',
+            tiles: [
+              'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+            ],
+            tileSize: 256,
+            attribution: '&copy; Esri, Maxar, Earthstar Geographics'
+          }
+        },
+        layers: [
+          {
+            id: 'satellite-layer',
+            type: 'raster',
+            source: 'satellite-tiles',
+            minzoom: 0,
+            maxzoom: 19
+          }
+        ]
+      };
+
+    case 'OPENFREEMAP_DARK':
+    case 'CARTO_DARK_KEYLESS':
+    default:
+      return {
+        version: 8,
+        sources: {
+          'open-tiles': {
+            type: 'raster',
+            tiles: [
+              'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
+            ],
+            tileSize: 256,
+            attribution: '&copy; OpenStreetMap contributors'
+          }
+        },
+        layers: [
+          {
+            id: 'open-base-layer',
+            type: 'raster',
+            source: 'open-tiles',
+            minzoom: 0,
+            maxzoom: 19
+          }
+        ]
+      };
+  }
+};
 
 export const TacticalMapCanvas: React.FC = () => {
   const mapContainer = useRef<HTMLDivElement>(null);
@@ -16,6 +147,7 @@ export const TacticalMapCanvas: React.FC = () => {
     forces,
     activeLayers,
     mode,
+    mapTheme,
     setSelectedDistrict,
     setSelectedSos,
     setSelectedHospital
@@ -27,28 +159,7 @@ export const TacticalMapCanvas: React.FC = () => {
 
     map.current = new maplibregl.Map({
       container: mapContainer.current,
-      style: {
-        version: 8,
-        sources: {
-          'osm-dark': {
-            type: 'raster',
-            tiles: [
-              'https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'
-            ],
-            tileSize: 256,
-            attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
-          }
-        },
-        layers: [
-          {
-            id: 'carto-dark-layer',
-            type: 'raster',
-            source: 'osm-dark',
-            minzoom: 0,
-            maxzoom: 19
-          }
-        ]
-      },
+      style: getMapStyle(mapTheme),
       center: [viewport.lon, viewport.lat],
       zoom: viewport.zoom,
       pitch: viewport.pitch,
@@ -62,6 +173,12 @@ export const TacticalMapCanvas: React.FC = () => {
       map.current = null;
     };
   }, []);
+
+  // Update map style on theme switch
+  useEffect(() => {
+    if (!map.current) return;
+    map.current.setStyle(getMapStyle(mapTheme));
+  }, [mapTheme]);
 
   // Sync Camera Viewport
   useEffect(() => {
@@ -88,8 +205,8 @@ export const TacticalMapCanvas: React.FC = () => {
         const el = document.createElement('div');
         const level = d.properties.composite_risk_level;
         const color = level === 'CRITICAL' ? '#EF4444' :
-          level === 'HIGH' ? '#F97316' :
-            level === 'MODERATE' ? '#F59E0B' : '#10B981';
+        level === 'HIGH' ? '#F97316' :
+          level === 'MODERATE' ? '#F59E0B' : '#10B981';
 
         el.className = 'district-marker cursor-pointer transition-transform hover:scale-125';
         el.style.width = '24px';

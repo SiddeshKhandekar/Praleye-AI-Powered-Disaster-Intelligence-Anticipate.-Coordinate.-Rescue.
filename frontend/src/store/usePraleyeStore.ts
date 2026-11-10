@@ -3,6 +3,7 @@ import {
   OperationalMode,
   DashboardView,
   HazardLayerType,
+  MapStyleTheme,
   DistrictHazardFeature,
   OsintReport,
   HospitalNode,
@@ -16,6 +17,10 @@ interface PraleyeStore {
   setMode: (mode: OperationalMode) => void;
   activeView: DashboardView;
   setActiveView: (view: DashboardView) => void;
+
+  // Base Map Theme
+  mapTheme: MapStyleTheme;
+  setMapTheme: (theme: MapStyleTheme) => void;
 
   // Map Viewport
   viewport: { lat: number; lon: number; zoom: number; pitch: number; bearing: number };
@@ -66,6 +71,9 @@ export const usePraleyeStore = create<PraleyeStore>((set) => ({
   setMode: (mode) => set({ mode }),
   activeView: 'COMMAND_HUD',
   setActiveView: (activeView) => set({ activeView }),
+
+  mapTheme: 'STADIA_ALIDADE_SMOOTH_DARK',
+  setMapTheme: (mapTheme) => set({ mapTheme }),
 
   viewport: { lat: 21.5937, lon: 78.9629, zoom: 4.8, pitch: 20, bearing: 0 },
   setViewport: (viewport) => set({ viewport }),
