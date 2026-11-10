@@ -69,3 +69,4 @@ export const BottomModeSwitcher: React.FC = () => {
     </footer>
   );
 };
+

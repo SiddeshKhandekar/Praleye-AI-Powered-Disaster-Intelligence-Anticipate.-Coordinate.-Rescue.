@@ -10,3 +10,4 @@ window.speechSynthesis = {
   speak: () => {},
   cancel: () => {},
 } as any;
+

@@ -122,3 +122,4 @@ export const usePraleyeStore = create<PraleyeStore>((set) => ({
   isSitrepModalOpen: false,
   setSitrepModalOpen: (isSitrepModalOpen) => set({ isSitrepModalOpen }),
 }));
+

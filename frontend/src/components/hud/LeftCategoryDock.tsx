@@ -77,3 +77,4 @@ export const LeftCategoryDock: React.FC = () => {
     </aside>
   );
 };
+

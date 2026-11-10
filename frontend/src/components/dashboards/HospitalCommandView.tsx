@@ -74,3 +74,4 @@ export const HospitalCommandView: React.FC = () => {
     </div>
   );
 };
+

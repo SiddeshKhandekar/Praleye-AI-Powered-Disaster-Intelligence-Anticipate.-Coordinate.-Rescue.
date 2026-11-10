@@ -1,0 +1,19 @@
+{
+  "name": "praleye-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Praleye - Autonomous Multi-Hazard Disaster Intelligence, OSINT Rescue Geolocation & Tactical Command Platform for India",
+  "scripts": {
+    "setup": "node -e \"const fs=require('fs'); if(!fs.existsSync('.env')) fs.copyFileSync('.env.example','.env');\" && pip install -r backend/requirements.txt && cd frontend && npm install",
+    "dev": "concurrently \"uvicorn --app-dir backend main:app --reload --port 8000\" \"npm --prefix frontend run dev\"",
+    "dev:backend": "uvicorn --app-dir backend main:app --reload --host 0.0.0.0 --port 8000",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "test": "pytest backend/tests/ -v && npm --prefix frontend run test",
+    "test:backend": "pytest backend/tests/ -v",
+    "test:frontend": "npm --prefix frontend run test"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  }
+}
+
