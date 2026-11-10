@@ -148,4 +148,6 @@ export const usePraleyeStore = create<PraleyeStore>((set) => ({
   setSitrepModalOpen: (isSitrepModalOpen) => set({ isSitrepModalOpen }),
   isCaseStudiesModalOpen: false,
   setCaseStudiesModalOpen: (isCaseStudiesModalOpen) => set({ isCaseStudiesModalOpen }),
+  isCityDetailModalOpen: false,
+  setCityDetailModalOpen: (isCityDetailModalOpen) => set({ isCityDetailModalOpen }),
 }));

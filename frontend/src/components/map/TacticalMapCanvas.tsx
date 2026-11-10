@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import maplibregl from 'maplibre-gl';
 import { usePraleyeStore } from '../../store/usePraleyeStore';
 import { MapStyleTheme, DistrictHazardFeature } from '../../types/praleye.types';
@@ -137,6 +137,7 @@ export const TacticalMapCanvas: React.FC = () => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<maplibregl.Map | null>(null);
   const markersRef = useRef<maplibregl.Marker[]>([]);
+  const [currentZoom, setCurrentZoom] = useState<number>(4.8);
 
   const {
     viewport,
@@ -152,20 +153,27 @@ export const TacticalMapCanvas: React.FC = () => {
     setSelectedDistrict,
     setSelectedSos,
     setSelectedHospital,
-    setHoveredEntity
+    setHoveredEntity,
+    setCityDetailModalOpen,
+    flyTo
   } = usePraleyeStore();
 
-  // Helper to construct GeoJSON for Hazard Heatmap
+  // Helper to construct GeoJSON for Hazard Heatmap & Halo Circle Layer
   const getHazardGeoJson = (): any => {
     return {
       type: 'FeatureCollection',
       features: districts.map((d) => {
         const pFlood = d.properties.probabilities?.p_flood || 0;
         const pLandslide = d.properties.probabilities?.p_landslide || 0;
+        const pCyclone = d.properties.probabilities?.p_cyclone || 0;
+        const pHeat = d.properties.probabilities?.p_heat || 0;
         const rain = d.properties.weather_telemetry?.rain_24h_mm || 0;
+
+        // Composite risk score normalized between 0.1 and 1.0
+        const maxProb = Math.max(pFlood, pLandslide, pCyclone, pHeat);
         const weight = Math.min(
           1.0,
-          Math.max(0.05, (pFlood * 0.4 + pLandslide * 0.35 + Math.min(100, rain) * 0.25) / 100)
+          Math.max(0.15, (maxProb * 0.7 + Math.min(100, rain) * 0.3) / 100)
         );
 
         return {
@@ -174,7 +182,10 @@ export const TacticalMapCanvas: React.FC = () => {
           properties: {
             risk_weight: weight,
             name: d.properties.name,
-            level: d.properties.composite_risk_level
+            state: d.properties.state,
+            level: d.properties.composite_risk_level,
+            temperature_c: d.properties.weather_telemetry?.temperature_c || 28.0,
+            rain_24h_mm: rain
           }
         };
       })
@@ -194,75 +205,155 @@ export const TacticalMapCanvas: React.FC = () => {
         properties: {
           urgency_weight: Math.min(
             1.0,
-            Math.max(0.2, ((r.urgency_score || 0.7) * Math.min(5, r.people_trapped || 1)) / 4)
+            Math.max(0.2, ((r.urgency_score || 0.7) * Math.min(5, r.people_trapped || 1)) / 3)
           )
         }
       }))
     };
   };
 
-  // Setup WebGL Heatmap layers
-  const setupHeatmapLayers = () => {
+  // Robust Heatmap & Circle Halo Layer Setup
+  const ensureHeatmapLayers = () => {
     if (!map.current || !map.current.isStyleLoaded()) return;
 
-    // 1. District Hazard Heatmap Source & Layer
-    if (!map.current.getSource('district-hazard-source')) {
+    // 1. Hazard Data Source
+    let hazardSrc = map.current.getSource('district-hazard-source') as maplibregl.GeoJSONSource;
+    if (!hazardSrc) {
       map.current.addSource('district-hazard-source', {
         type: 'geojson',
         data: getHazardGeoJson()
       });
+    } else {
+      hazardSrc.setData(getHazardGeoJson());
+    }
 
+    // 2. High-Vibrancy WebGL Heatmap Layer
+    if (!map.current.getLayer('district-hazard-heatmap')) {
       map.current.addLayer({
         id: 'district-hazard-heatmap',
         type: 'heatmap',
         source: 'district-hazard-source',
-        maxzoom: 14,
+        maxzoom: 15,
         paint: {
-          'heatmap-weight': ['get', 'risk_weight'],
-          'heatmap-intensity': ['interpolate', ['linear'], ['zoom'], 0, 1.2, 7, 2.5, 12, 4],
+          'heatmap-weight': [
+            'interpolate',
+            ['linear'],
+            ['get', 'risk_weight'],
+            0, 0.5,
+            0.5, 2.5,
+            1.0, 5.0
+          ],
+          'heatmap-intensity': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            0, 1.8,
+            4, 3.2,
+            8, 5.0,
+            13, 7.5
+          ],
           'heatmap-color': [
             'interpolate',
             ['linear'],
             ['heatmap-density'],
             0, 'rgba(0, 0, 0, 0)',
-            0.15, 'rgba(6, 182, 212, 0.45)',
-            0.35, 'rgba(16, 185, 129, 0.65)',
-            0.55, 'rgba(245, 158, 11, 0.8)',
-            0.75, 'rgba(249, 115, 22, 0.9)',
-            1.0, 'rgba(239, 68, 68, 0.98)'
+            0.03, 'rgba(6, 182, 212, 0.4)',
+            0.20, 'rgba(16, 185, 129, 0.7)',
+            0.45, 'rgba(245, 158, 11, 0.85)',
+            0.70, 'rgba(249, 115, 22, 0.95)',
+            0.90, 'rgba(239, 68, 68, 1.0)',
+            1.0, 'rgba(255, 0, 80, 1.0)'
           ],
-          'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 0, 18, 5, 42, 9, 85],
-          'heatmap-opacity': 0.75
+          'heatmap-radius': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            0, 45,
+            3, 75,
+            5, 115,
+            8, 165,
+            12, 240
+          ],
+          'heatmap-opacity': 0.85
         }
       });
     }
 
-    // 2. SOS Distress Cluster Heatmap Source & Layer
-    if (!map.current.getSource('sos-distress-source')) {
+    // 3. Radial Glow Halo Layer (ensures visible disaster fields even when zoomed into city)
+    if (!map.current.getLayer('district-hazard-circle-halo')) {
+      map.current.addLayer({
+        id: 'district-hazard-circle-halo',
+        type: 'circle',
+        source: 'district-hazard-source',
+        paint: {
+          'circle-radius': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            2, 20,
+            5, 55,
+            8, 110,
+            12, 220
+          ],
+          'circle-color': [
+            'match',
+            ['get', 'level'],
+            'CRITICAL', '#EF4444',
+            'HIGH', '#F97316',
+            'MODERATE', '#F59E0B',
+            '#10B981'
+          ],
+          'circle-blur': 0.8,
+          'circle-opacity': 0.55
+        }
+      });
+    }
+
+    // 4. SOS Distress Heatmap Source & Layer
+    let sosSrc = map.current.getSource('sos-distress-source') as maplibregl.GeoJSONSource;
+    if (!sosSrc) {
       map.current.addSource('sos-distress-source', {
         type: 'geojson',
         data: getSosGeoJson()
       });
+    } else {
+      sosSrc.setData(getSosGeoJson());
+    }
 
+    if (!map.current.getLayer('sos-distress-heatmap')) {
       map.current.addLayer({
         id: 'sos-distress-heatmap',
         type: 'heatmap',
         source: 'sos-distress-source',
-        maxzoom: 14,
+        maxzoom: 15,
         paint: {
           'heatmap-weight': ['get', 'urgency_weight'],
-          'heatmap-intensity': ['interpolate', ['linear'], ['zoom'], 0, 1.5, 8, 3],
+          'heatmap-intensity': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            0, 2.0,
+            5, 4.0,
+            9, 6.0
+          ],
           'heatmap-color': [
             'interpolate',
             ['linear'],
             ['heatmap-density'],
             0, 'rgba(0, 0, 0, 0)',
-            0.2, 'rgba(239, 68, 68, 0.4)',
-            0.6, 'rgba(220, 38, 38, 0.75)',
-            1.0, 'rgba(255, 0, 70, 0.98)'
+            0.15, 'rgba(239, 68, 68, 0.45)',
+            0.55, 'rgba(220, 38, 38, 0.8)',
+            1.0, 'rgba(255, 0, 80, 1.0)'
           ],
-          'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 0, 14, 5, 32, 9, 65],
-          'heatmap-opacity': 0.85
+          'heatmap-radius': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            0, 30,
+            5, 60,
+            9, 110
+          ],
+          'heatmap-opacity': 0.88
         }
       });
     }
@@ -279,6 +370,9 @@ export const TacticalMapCanvas: React.FC = () => {
 
     if (map.current.getLayer('district-hazard-heatmap')) {
       map.current.setLayoutProperty('district-hazard-heatmap', 'visibility', visibility);
+    }
+    if (map.current.getLayer('district-hazard-circle-halo')) {
+      map.current.setLayoutProperty('district-hazard-circle-halo', 'visibility', visibility);
     }
     if (map.current.getLayer('sos-distress-heatmap')) {
       map.current.setLayoutProperty('sos-distress-heatmap', 'visibility', visibility);
@@ -300,8 +394,18 @@ export const TacticalMapCanvas: React.FC = () => {
 
     map.current.addControl(new maplibregl.NavigationControl({ showCompass: true }), 'bottom-left');
 
+    map.current.on('load', () => {
+      ensureHeatmapLayers();
+    });
+
     map.current.on('style.load', () => {
-      setupHeatmapLayers();
+      ensureHeatmapLayers();
+    });
+
+    map.current.on('zoom', () => {
+      if (map.current) {
+        setCurrentZoom(map.current.getZoom());
+      }
     });
 
     return () => {
@@ -315,25 +419,13 @@ export const TacticalMapCanvas: React.FC = () => {
     if (!map.current) return;
     map.current.setStyle(getMapStyle(mapTheme));
     map.current.once('style.load', () => {
-      setupHeatmapLayers();
+      ensureHeatmapLayers();
     });
   }, [mapTheme]);
 
   // Update Heatmap data sources when districts or osint reports change
   useEffect(() => {
-    if (!map.current || !map.current.isStyleLoaded()) return;
-
-    const hazardSrc = map.current.getSource('district-hazard-source') as maplibregl.GeoJSONSource;
-    if (hazardSrc) {
-      hazardSrc.setData(getHazardGeoJson());
-    }
-
-    const sosSrc = map.current.getSource('sos-distress-source') as maplibregl.GeoJSONSource;
-    if (sosSrc) {
-      sosSrc.setData(getSosGeoJson());
-    }
-
-    updateHeatmapVisibility();
+    ensureHeatmapLayers();
   }, [districts, osintReports, vizMode]);
 
   // Sync Camera Viewport
@@ -347,7 +439,7 @@ export const TacticalMapCanvas: React.FC = () => {
     });
   }, [viewport.lat, viewport.lon, viewport.zoom]);
 
-  // Update Markers based on Active Mode, Layer Toggles, and vizMode
+  // Update Markers based on Active Mode, Layer Toggles, vizMode, and currentZoom
   useEffect(() => {
     if (!map.current) return;
 
@@ -359,7 +451,9 @@ export const TacticalMapCanvas: React.FC = () => {
     const shouldRenderPins = vizMode === 'PINS' || vizMode === 'HYBRID';
     if (!shouldRenderPins) return;
 
-    // 1. High-Fidelity Tactical District Hazard Centroid Pins
+    const isZoomedIntoCity = currentZoom >= 7.0;
+
+    // 1. High-Fidelity Tactical District / City Hazard Centroid Pins
     if (activeLayers.has('FLOOD_GRID') || mode === 'MODE_1_PREDICTION') {
       districts.forEach((d: DistrictHazardFeature) => {
         const el = document.createElement('div');
@@ -391,23 +485,97 @@ export const TacticalMapCanvas: React.FC = () => {
             ? '🌀'
             : '🌊';
 
-        el.className = 'group relative flex flex-col items-center cursor-pointer select-none';
+        const w = d.properties.weather_telemetry;
 
-        el.innerHTML = `
-          <div class="flex items-center gap-1 px-1.5 py-0.5 rounded shadow-lg transition-transform duration-200 group-hover:scale-110"
-               style="background: rgba(9, 13, 22, 0.92); border: 1.5px solid ${color}; box-shadow: 0 0 10px ${color}55;">
-            <span style="font-size: 11px;">${icon}</span>
-            <span style="font-size: 9px; font-weight: bold; color: ${color}; font-family: monospace;">${maxRisk}%</span>
-            <span style="font-size: 8px; font-weight: 600; color: #cbd5e1; font-family: monospace; text-transform: uppercase;">${d.properties.name.slice(0, 6)}</span>
-          </div>
-          ${
-            level === 'CRITICAL'
-              ? `<div class="absolute -inset-1 rounded-full border border-rose-500/60 radar-ripple pointer-events-none"></div>`
-              : ''
-          }
-        `;
+        if (isZoomedIntoCity) {
+          // ========================================================
+          // ZOOMED INTO CITY VIEW: Expanded Interactive City Weather Card
+          // ========================================================
+          el.className = 'group relative flex flex-col items-center cursor-pointer select-none';
+          el.innerHTML = `
+            <div class="relative w-64 rounded-xl tactical-glass-elevated border border-slate-700/90 shadow-2xl p-2.5 space-y-2 transition-all duration-200 group-hover:scale-105 group-hover:border-cyan-400"
+                 style="box-shadow: 0 0 20px ${color}40;">
+              
+              <!-- City Header -->
+              <div class="flex items-center justify-between pb-1.5 border-b border-slate-700/70">
+                <div class="flex items-center gap-1.5 min-w-0">
+                  <span class="w-2.5 h-2.5 rounded-full ${level === 'CRITICAL' ? 'bg-rose-500 animate-ping' : ''}" style="background-color: ${color};"></span>
+                  <div class="truncate">
+                    <span class="font-bold text-slate-100 text-xs uppercase tracking-wider block truncate">${d.properties.name}</span>
+                    <span class="text-[9px] text-slate-400 font-mono">${d.properties.state}</span>
+                  </div>
+                </div>
+                <span class="px-1.5 py-0.5 rounded text-[9px] font-bold font-mono" style="background-color: ${color}25; color: ${color}; border: 1px solid ${color}50;">
+                  ${maxRisk}% RISK
+                </span>
+              </div>
 
-        el.onclick = () => setSelectedDistrict(d);
+              <!-- Main Weather Readout -->
+              <div class="flex items-center justify-between bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                <div class="flex items-center gap-2">
+                  <span class="text-xl">${w.weather_icon || '⛅'}</span>
+                  <div>
+                    <div class="text-sm font-bold text-slate-100 font-mono">${w.temperature_c.toFixed(1)}°C</div>
+                    <div class="text-[9px] text-slate-400 font-mono">Feels ${w.apparent_temperature_c?.toFixed(1) || w.temperature_c.toFixed(1)}°C</div>
+                  </div>
+                </div>
+                <div class="text-right font-mono">
+                  <div class="text-[10px] text-cyan-300 font-bold">${w.rain_24h_mm.toFixed(1)}mm Rain</div>
+                  <div class="text-[9px] text-slate-400">${w.weather_condition || 'Partly Cloudy'}</div>
+                </div>
+              </div>
+
+              <!-- Secondary Sensor Grid -->
+              <div class="grid grid-cols-3 gap-1 font-mono text-[9px] text-center">
+                <div class="bg-slate-900/60 p-1 rounded border border-slate-800">
+                  <span class="text-slate-400 block text-[8px]">HUMIDITY</span>
+                  <span class="text-slate-200 font-bold">${Math.round(w.relative_humidity)}%</span>
+                </div>
+                <div class="bg-slate-900/60 p-1 rounded border border-slate-800">
+                  <span class="text-slate-400 block text-[8px]">WIND GUST</span>
+                  <span class="text-sky-300 font-bold">${Math.round(w.wind_gust_kmh)}kph</span>
+                </div>
+                <div class="bg-slate-900/60 p-1 rounded border border-slate-800">
+                  <span class="text-slate-400 block text-[8px]">SOIL MOIST</span>
+                  <span class="text-emerald-300 font-bold">${w.soil_moisture.toFixed(2)}</span>
+                </div>
+              </div>
+
+              <!-- Click Action Button -->
+              <button class="w-full py-1 rounded bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-500/50 text-cyan-200 text-[10px] font-bold font-mono tracking-wider transition-colors flex items-center justify-center gap-1">
+                <span>🔍</span> INSPECT CITY INTEL →
+              </button>
+            </div>
+            ${level === 'CRITICAL' ? `<div class="absolute -inset-2 rounded-2xl border border-rose-500/50 radar-ripple pointer-events-none"></div>` : ''}
+          `;
+        } else {
+          // ========================================================
+          // REGIONAL VIEW: Compact High-Contrast Tactical Marker
+          // ========================================================
+          el.className = 'group relative flex flex-col items-center cursor-pointer select-none';
+          el.innerHTML = `
+            <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg shadow-xl transition-transform duration-200 group-hover:scale-125"
+                 style="background: rgba(9, 13, 22, 0.94); border: 1.5px solid ${color}; box-shadow: 0 0 12px ${color}66;">
+              <span style="font-size: 12px;">${icon}</span>
+              <span style="font-size: 10px; font-weight: bold; color: ${color}; font-family: monospace;">${maxRisk}%</span>
+              <span style="font-size: 9px; font-weight: 700; color: #f1f5f9; font-family: monospace; text-transform: uppercase;">${d.properties.name.slice(0, 7)}</span>
+              <span style="font-size: 9px; color: #38bdf8; font-family: monospace; padding-left: 2px; border-left: 1px solid #334155;">${Math.round(w.temperature_c)}°</span>
+            </div>
+            ${
+              level === 'CRITICAL'
+                ? `<div class="absolute -inset-1 rounded-full border border-rose-500/60 radar-ripple pointer-events-none"></div>`
+                : ''
+            }
+          `;
+        }
+
+        const handleSelectCity = () => {
+          setSelectedDistrict(d);
+          setCityDetailModalOpen(true);
+          flyTo(d.geometry.coordinates[1], d.geometry.coordinates[0], Math.max(currentZoom, 10));
+        };
+
+        el.onclick = handleSelectCity;
         el.onmouseenter = (e) =>
           setHoveredEntity({ type: 'DISTRICT', data: d, x: e.clientX, y: e.clientY });
         el.onmouseleave = () => setHoveredEntity(null);
@@ -533,7 +701,7 @@ export const TacticalMapCanvas: React.FC = () => {
         markersRef.current.push(marker);
       });
     }
-  }, [districts, osintReports, hospitals, safeZones, forces, activeLayers, mode, vizMode]);
+  }, [districts, osintReports, hospitals, safeZones, forces, activeLayers, mode, vizMode, currentZoom]);
 
   return (
     <div className="absolute inset-0 w-full h-full">
