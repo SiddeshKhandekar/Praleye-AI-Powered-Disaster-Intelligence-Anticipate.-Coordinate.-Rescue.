@@ -7,7 +7,10 @@ describe('usePraleyeStore HUD State Management', () => {
       mode: 'MODE_1_PREDICTION',
       activeView: 'COMMAND_HUD',
       language: 'hi',
-      timeOffsetHours: 0
+      timeOffsetHours: 0,
+      vizMode: 'HYBRID',
+      hoveredEntity: null,
+      isCityDetailModalOpen: false
     });
   });
 
@@ -67,5 +70,15 @@ describe('usePraleyeStore HUD State Management', () => {
     store.setHoveredEntity(null);
     expect(usePraleyeStore.getState().hoveredEntity).toBeNull();
   });
-});
 
+  it('should toggle city detail modal open state', () => {
+    const store = usePraleyeStore.getState();
+    expect(store.isCityDetailModalOpen).toBe(false);
+
+    store.setCityDetailModalOpen(true);
+    expect(usePraleyeStore.getState().isCityDetailModalOpen).toBe(true);
+
+    store.setCityDetailModalOpen(false);
+    expect(usePraleyeStore.getState().isCityDetailModalOpen).toBe(false);
+  });
+});

@@ -115,10 +115,5 @@ async def fetch_open_meteo_weather(lat: float, lon: float) -> Dict[str, Any]:
         "weather_icon": "⛅",
         "status": "SIMULATED_OFFLINE"
     }
-        "wind_speed_kmh": 14.0,
-        "wind_gust_kmh": 22.0,
-        "pressure_msl_hpa": 1011.0,
-        "status": "SIMULATED_OFFLINE"
-    }
     return fallback
 

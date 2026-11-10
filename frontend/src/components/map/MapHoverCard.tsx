@@ -67,9 +67,21 @@ export const MapHoverCard: React.FC = () => {
               </span>
             </div>
             <div>
+              <span className="text-slate-400 block text-[9px] uppercase">Temp & Weather</span>
+              <span className="text-amber-300 font-bold">
+                {data.properties.weather_telemetry.weather_icon || '⛅'} {Math.round(data.properties.weather_telemetry.temperature_c)}°C
+              </span>
+            </div>
+            <div>
               <span className="text-slate-400 block text-[9px] uppercase">Wind Gust</span>
               <span className="text-slate-200 font-bold">
                 {Math.round(data.properties.weather_telemetry.wind_gust_kmh)} km/h
+              </span>
+            </div>
+            <div>
+              <span className="text-slate-400 block text-[9px] uppercase">Soil Saturation</span>
+              <span className="text-emerald-300 font-bold">
+                {data.properties.weather_telemetry.soil_moisture.toFixed(2)} m³/m³
               </span>
             </div>
           </div>

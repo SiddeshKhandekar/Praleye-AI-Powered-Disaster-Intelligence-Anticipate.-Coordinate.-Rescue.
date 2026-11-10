@@ -21,7 +21,8 @@ export const RightDepthInspector: React.FC = () => {
     setSelectedSos,
     flyTo,
     setTriageModalOpen,
-    forces
+    forces,
+    setCityDetailModalOpen
   } = usePraleyeStore();
 
   const [isOpen, setIsOpen] = useState(true);
@@ -153,13 +154,25 @@ export const RightDepthInspector: React.FC = () => {
                 </div>
 
                 {/* Real-time telemetry */}
-                <div className="bg-obsidian-950/80 p-3 rounded border border-white/10 space-y-1 text-slate-300">
-                  <div className="text-[11px] font-bold text-slate-400">ATMOSPHERIC SENSOR TELEMETRY</div>
-                  <div>Precipitation (24h): <span className="text-white">{selectedDistrict.properties.weather_telemetry.rain_24h_mm} mm</span></div>
-                  <div>Soil Moisture: <span className="text-white">{selectedDistrict.properties.weather_telemetry.soil_moisture} m³/m³</span></div>
-                  <div>Wind Gust: <span className="text-white">{selectedDistrict.properties.weather_telemetry.wind_gust_kmh} km/h</span></div>
-                  <div>Ambient Temp: <span className="text-white">{selectedDistrict.properties.weather_telemetry.temperature_c}°C ({selectedDistrict.properties.weather_telemetry.relative_humidity}% RH)</span></div>
+                <div className="bg-obsidian-950/80 p-3 rounded border border-white/10 space-y-1.5 text-slate-300">
+                  <div className="flex items-center justify-between text-[11px] font-bold text-slate-400">
+                    <span>ATMOSPHERIC SENSOR TELEMETRY</span>
+                    <span className="text-cyan-400">{selectedDistrict.properties.weather_telemetry.weather_icon || '⛅'} {selectedDistrict.properties.weather_telemetry.weather_condition || 'Active'}</span>
+                  </div>
+                  <div>Ambient Temp: <span className="text-white font-bold">{selectedDistrict.properties.weather_telemetry.temperature_c}°C</span> <span className="text-slate-400 text-[10px]">(Feels {selectedDistrict.properties.weather_telemetry.apparent_temperature_c || selectedDistrict.properties.weather_telemetry.temperature_c}°C)</span></div>
+                  <div>Precipitation (24h / 72h): <span className="text-cyan-300 font-bold">{selectedDistrict.properties.weather_telemetry.rain_24h_mm} mm</span> / <span className="text-cyan-400">{selectedDistrict.properties.weather_telemetry.rain_72h_mm} mm</span></div>
+                  <div>Soil Moisture: <span className="text-emerald-300 font-bold">{selectedDistrict.properties.weather_telemetry.soil_moisture} m³/m³</span></div>
+                  <div>Wind & Max Gusts: <span className="text-white">{selectedDistrict.properties.weather_telemetry.wind_speed_kmh} / {selectedDistrict.properties.weather_telemetry.wind_gust_kmh} km/h</span></div>
+                  <div>Relative Humidity: <span className="text-white">{selectedDistrict.properties.weather_telemetry.relative_humidity}%</span> | Pressure: <span className="text-white">{selectedDistrict.properties.weather_telemetry.pressure_msl_hpa} hPa</span></div>
                 </div>
+
+                {/* Inspect City Intelligence Button */}
+                <button
+                  onClick={() => setCityDetailModalOpen(true)}
+                  className="w-full py-2 px-3 rounded-lg bg-gradient-to-r from-cyan-900/60 to-blue-900/60 border border-cyan-500/60 hover:border-cyan-400 text-cyan-200 font-bold text-xs tracking-wider transition-all shadow-lg flex items-center justify-center gap-2 group"
+                >
+                  <span>🏙️</span> OPEN FULL CITY INTEL MODAL →
+                </button>
               </div>
             ) : (
               <div className="text-center py-10 text-slate-500">
