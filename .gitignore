@@ -1,0 +1,103 @@
+# 1. Environment Variables & Secrets
+.env
+.env.local
+.env.*.local
+*.pem
+
+# 2. Python / Backend (`backend/`)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Python Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+
+# Testing & Coverage
+.pytest_cache/
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+.rpt/
+.hypothesis/
+.pytest_cache/
+
+# Type Checking & Linters
+.mypy_cache/
+.ruff_cache/
+.pytype/
+
+# Local SQLite Databases & Scraped Data Storage
+backend/data/*.db
+backend/data/*.sqlite
+backend/data/*.sqlite3
+backend/data/cache/
+*.log
+
+# 3. Node.js & Frontend (`frontend/`)
+node_modules/
+jspm_packages/
+.pnp/
+.pnp.js
+
+# Next.js Build Outputs
+.next/
+out/
+build/
+dist/
+.turbo/
+
+# Parcel / Vite / Bundler caches
+.cache/
+.parcel-cache/
+
+# Package Manager Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# 4. IDEs & Editors
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+.idea/
+*.swp
+*.swo
+*.swn
+.history/
+
+# 5. Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
