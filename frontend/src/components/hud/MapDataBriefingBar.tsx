@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { usePraleyeStore } from '../../store/usePraleyeStore';
 import { DistrictHazardFeature } from '../../types/praleye.types';
+import { interpolateDistrictData, interpolateOsintReports, getTimelineState } from '../../services/timelineTransitionService';
 
 export const MapDataBriefingBar: React.FC = () => {
   const {
@@ -12,12 +13,24 @@ export const MapDataBriefingBar: React.FC = () => {
     setSelectedDistrict,
     vizMode,
     setVizMode,
-    setCaseStudiesModalOpen
+    setCaseStudiesModalOpen,
+    timeOffsetHours
   } = usePraleyeStore();
+
+  const timelineInfo = getTimelineState(timeOffsetHours);
+
+  // Dynamically interpolate districts according to timeline offset
+  const effectiveDistricts = useMemo(() => {
+    return districts.map((d) => interpolateDistrictData(d, timeOffsetHours));
+  }, [districts, timeOffsetHours]);
+
+  const effectiveOsintReports = useMemo(() => {
+    return interpolateOsintReports(osintReports, timeOffsetHours);
+  }, [osintReports, timeOffsetHours]);
 
   // Calculate highest risk districts
   const topCriticalDistricts = useMemo(() => {
-    return [...districts]
+    return [...effectiveDistricts]
       .sort((a, b) => {
         const riskA = Math.max(
           a.properties.probabilities.p_flood,
@@ -34,7 +47,7 @@ export const MapDataBriefingBar: React.FC = () => {
         return riskB - riskA;
       })
       .slice(0, 3);
-  }, [districts]);
+  }, [effectiveDistricts]);
 
   // Aggregate Hospital ICU capacity
   const hospitalStats = useMemo(() => {
@@ -55,8 +68,8 @@ export const MapDataBriefingBar: React.FC = () => {
 
   // Aggregate Active Distress count
   const totalTrapped = useMemo(() => {
-    return osintReports.reduce((acc, r) => acc + (r.people_trapped || 1), 0);
-  }, [osintReports]);
+    return effectiveOsintReports.reduce((acc, r) => acc + (r.people_trapped || 1), 0);
+  }, [effectiveOsintReports]);
 
   const handleDistrictJump = (d: DistrictHazardFeature) => {
     flyTo(d.geometry.coordinates[1], d.geometry.coordinates[0], 9);
@@ -77,9 +90,17 @@ export const MapDataBriefingBar: React.FC = () => {
             DEFCON-2 HADR
           </span>
           <span className="text-[10px] text-slate-400 pl-1 border-l border-slate-700">
-            {districts.filter((d) => d.properties.composite_risk_level === 'CRITICAL').length} CRIT /{' '}
-            {districts.filter((d) => d.properties.composite_risk_level === 'HIGH').length} HIGH
+            {effectiveDistricts.filter((d) => d.properties.composite_risk_level === 'CRITICAL').length} CRIT /{' '}
+            {effectiveDistricts.filter((d) => d.properties.composite_risk_level === 'HIGH').length} HIGH
           </span>
+        </div>
+
+        {/* Dynamic Timeline Phase Stamp */}
+        <div className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg tactical-glass border shadow-lg text-[10px] font-bold ${timelineInfo.stageBadgeColor}`}>
+          <span>{timelineInfo.badgeIcon}</span>
+          <span>{timelineInfo.stageLabel}</span>
+          <span className="opacity-80 font-normal">({timelineInfo.formattedDate})</span>
+        </div>
         </div>
 
         {/* Priority Hotspot Quick-Jump Pills */}

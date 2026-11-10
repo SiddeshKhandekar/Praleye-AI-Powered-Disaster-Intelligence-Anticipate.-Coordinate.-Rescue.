@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import maplibregl from 'maplibre-gl';
 import { usePraleyeStore } from '../../store/usePraleyeStore';
 import { MapStyleTheme, DistrictHazardFeature } from '../../types/praleye.types';
 import { getMicroLocationsForDistrict, MicroLocationNode } from '../../services/microLocationsData';
+import { interpolateDistrictData, interpolateOsintReports } from '../../services/timelineTransitionService';
 
 export const getMapStyle = (theme: MapStyleTheme): any => {
   const apiKey = (import.meta as any).env?.VITE_STADIA_API_KEY || '';
@@ -157,14 +158,24 @@ export const TacticalMapCanvas: React.FC = () => {
     setHoveredEntity,
     setCityDetailModalOpen,
     setSelectedMicroLocation,
-    flyTo
+    flyTo,
+    timeOffsetHours
   } = usePraleyeStore();
+
+  // Dynamically interpolate district hazard features and OSINT reports according to timeline scrubber
+  const effectiveDistricts = useMemo(() => {
+    return districts.map((d) => interpolateDistrictData(d, timeOffsetHours));
+  }, [districts, timeOffsetHours]);
+
+  const effectiveOsintReports = useMemo(() => {
+    return interpolateOsintReports(osintReports, timeOffsetHours);
+  }, [osintReports, timeOffsetHours]);
 
   // Helper to construct GeoJSON for Hazard Heatmap & Halo Circle Layer
   const getHazardGeoJson = (): any => {
     return {
       type: 'FeatureCollection',
-      features: districts.map((d) => {
+      features: effectiveDistricts.map((d) => {
         const pFlood = d.properties.probabilities?.p_flood || 0;
         const pLandslide = d.properties.probabilities?.p_landslide || 0;
         const pCyclone = d.properties.probabilities?.p_cyclone || 0;
@@ -198,7 +209,7 @@ export const TacticalMapCanvas: React.FC = () => {
   const getSosGeoJson = (): any => {
     return {
       type: 'FeatureCollection',
-      features: osintReports.map((r) => ({
+      features: effectiveOsintReports.map((r) => ({
         type: 'Feature',
         geometry: {
           type: 'Point',
@@ -423,10 +434,10 @@ export const TacticalMapCanvas: React.FC = () => {
     });
   }, [mapTheme]);
 
-  // Update Heatmap data sources when districts or osint reports change
+  // Update Heatmap data sources when districts, osint reports, or timeline offset change
   useEffect(() => {
     ensureHeatmapLayers();
-  }, [districts, osintReports, vizMode]);
+  }, [effectiveDistricts, effectiveOsintReports, vizMode, timeOffsetHours]);
 
   // Sync Camera Viewport
   useEffect(() => {
@@ -455,7 +466,7 @@ export const TacticalMapCanvas: React.FC = () => {
 
     // 1. High-Fidelity Tactical District / City Hazard Centroid Pins
     if (activeLayers.has('FLOOD_GRID') || mode === 'MODE_1_PREDICTION') {
-      districts.forEach((d: DistrictHazardFeature) => {
+      effectiveDistricts.forEach((d: DistrictHazardFeature) => {
         const el = document.createElement('div');
         const level = d.properties.composite_risk_level;
         const color =
@@ -594,7 +605,7 @@ export const TacticalMapCanvas: React.FC = () => {
     // 1.B Micro-Location Chowks & Localities (Rendered when zoomed in >= 8.5)
     if (currentZoom >= 8.5 && (activeLayers.has('FLOOD_GRID') || mode === 'MODE_1_PREDICTION')) {
       // Find districts within reasonable distance or visible area
-      districts.forEach((d) => {
+      effectiveDistricts.forEach((d) => {
         const microLocs = getMicroLocationsForDistrict(
           d.properties.district_id,
           d.properties.name,
@@ -658,7 +669,7 @@ export const TacticalMapCanvas: React.FC = () => {
 
     // 2. High-Fidelity Tactical SOS Distress Beacons (Live Rescue)
     if (activeLayers.has('SOS_BEACONS') || mode === 'MODE_2_OSINT_RESCUE') {
-      osintReports.forEach((r) => {
+      effectiveOsintReports.forEach((r) => {
         const el = document.createElement('div');
         el.className = 'group relative flex flex-col items-center cursor-pointer select-none';
 
@@ -770,7 +781,18 @@ export const TacticalMapCanvas: React.FC = () => {
         markersRef.current.push(marker);
       });
     }
-  }, [districts, osintReports, hospitals, safeZones, forces, activeLayers, mode, vizMode, currentZoom]);
+  }, [
+    effectiveDistricts,
+    effectiveOsintReports,
+    hospitals,
+    safeZones,
+    forces,
+    activeLayers,
+    mode,
+    vizMode,
+    currentZoom,
+    timeOffsetHours
+  ]);
 
   return (
     <div className="absolute inset-0 w-full h-full">

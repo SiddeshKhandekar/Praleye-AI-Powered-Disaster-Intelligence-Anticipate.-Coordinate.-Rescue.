@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   BarChart3,
   Radio,
@@ -8,10 +8,14 @@ import {
   ChevronLeft,
   AlertTriangle,
   CheckCircle2,
-  Send
+  Send,
+  Calendar,
+  Clock,
+  Sparkles
 } from 'lucide-react';
 import { usePraleyeStore } from '../../store/usePraleyeStore';
 import { apiClient } from '../../services/apiClient';
+import { interpolateDistrictData, interpolateOsintReports, getTimelineState } from '../../services/timelineTransitionService';
 
 export const RightDepthInspector: React.FC = () => {
   const {
@@ -22,8 +26,20 @@ export const RightDepthInspector: React.FC = () => {
     flyTo,
     setTriageModalOpen,
     forces,
-    setCityDetailModalOpen
+    setCityDetailModalOpen,
+    timeOffsetHours
   } = usePraleyeStore();
+
+  const timelineInfo = getTimelineState(timeOffsetHours);
+
+  // Smoothly interpolate selected district and osint reports with timeline lever
+  const effectiveDistrict = useMemo(() => {
+    return selectedDistrict ? interpolateDistrictData(selectedDistrict, timeOffsetHours) : null;
+  }, [selectedDistrict, timeOffsetHours]);
+
+  const effectiveOsintReports = useMemo(() => {
+    return interpolateOsintReports(osintReports, timeOffsetHours);
+  }, [osintReports, timeOffsetHours]);
 
   const [isOpen, setIsOpen] = useState(true);
   const [activeTab, setActiveTab] = useState<'METRICS' | 'OSINT' | 'TRIAGE' | 'AI'>('METRICS');
