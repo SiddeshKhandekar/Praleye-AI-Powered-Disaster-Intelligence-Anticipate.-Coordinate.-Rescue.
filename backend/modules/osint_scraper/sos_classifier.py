@@ -53,3 +53,4 @@ def score_sos_urgency(text: str, group_size: int = 1) -> Dict[str, Any]:
         "life_threat": has_life_threat,
         "vulnerable_people": has_vulnerable
     }
+

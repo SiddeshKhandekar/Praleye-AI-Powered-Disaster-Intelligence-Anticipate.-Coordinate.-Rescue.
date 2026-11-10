@@ -46,3 +46,4 @@ def generate_cap_v12_xml(
     ET.SubElement(area, "areaDesc").text = f"{district_name} District & Surrounding Sub-divisions"
 
     return ET.tostring(root, encoding="utf-8", xml_declaration=True).decode("utf-8")
+

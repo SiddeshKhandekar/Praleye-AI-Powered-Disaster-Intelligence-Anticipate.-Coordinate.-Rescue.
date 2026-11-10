@@ -76,3 +76,4 @@ async def fetch_usgs_earthquakes(min_magnitude: float = 3.0) -> List[Dict[str, A
         }
     ]
     return baseline
+

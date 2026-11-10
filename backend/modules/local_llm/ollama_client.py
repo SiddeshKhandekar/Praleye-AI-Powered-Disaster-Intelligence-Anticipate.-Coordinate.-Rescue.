@@ -49,3 +49,4 @@ Keep it concise, authoritative, and actionable for Army/NDRF Commanders."""
         logger.info(f"Ollama connection unavailable ({e}). Triggering deterministic tactical briefing fallback.")
 
     return build_deterministic_military_sitrep(top_districts, sos_count, icu_saturation_pct)
+

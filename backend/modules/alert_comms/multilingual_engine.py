@@ -63,3 +63,4 @@ def translate_disaster_alert(alert_key: str, lang: str = "hi") -> str:
     """Returns disaster warning string translated into requested Indian language."""
     lang_dict = INDIAN_LANG_TRANSLATIONS.get(lang.lower(), INDIAN_LANG_TRANSLATIONS["en"])
     return lang_dict.get(alert_key, INDIAN_LANG_TRANSLATIONS["en"].get(alert_key, "Emergency Disaster Warning"))
+

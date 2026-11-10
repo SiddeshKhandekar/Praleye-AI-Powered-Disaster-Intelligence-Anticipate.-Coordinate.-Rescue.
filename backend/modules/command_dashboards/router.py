@@ -69,3 +69,4 @@ async def get_safe_shelters(session: AsyncSession = Depends(get_db)):
         }
         for z in zones
     ]
+

@@ -43,3 +43,4 @@ async def fetch_imd_cwc_bulletins() -> List[Dict[str, Any]]:
     ]
     cache.set(cache_key, bulletins)
     return bulletins
+

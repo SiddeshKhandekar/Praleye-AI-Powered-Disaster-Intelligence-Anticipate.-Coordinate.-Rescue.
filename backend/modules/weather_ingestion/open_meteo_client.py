@@ -78,3 +78,4 @@ async def fetch_open_meteo_weather(lat: float, lon: float) -> Dict[str, Any]:
         "status": "SIMULATED_OFFLINE"
     }
     return fallback
+

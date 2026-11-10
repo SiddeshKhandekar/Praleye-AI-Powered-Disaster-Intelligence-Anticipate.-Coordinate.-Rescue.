@@ -97,3 +97,4 @@ def validate_iaf_helipad_weather_ceiling(
         "visibility_km": visibility_km,
         "recommendation": recommendation
     }
+

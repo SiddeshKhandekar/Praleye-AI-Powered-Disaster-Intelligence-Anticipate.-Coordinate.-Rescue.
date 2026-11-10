@@ -39,3 +39,4 @@ class ConnectionManager:
 
 # Global WebSocket manager instance
 ws_manager = ConnectionManager()
+

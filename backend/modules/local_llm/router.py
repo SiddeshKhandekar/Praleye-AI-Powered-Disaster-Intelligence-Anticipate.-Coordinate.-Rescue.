@@ -33,3 +33,4 @@ async def generate_sitrep_briefing(
     sos_count = payload.get("active_sos_count", 6)
 
     return await generate_military_sitrep_llm(districts, sos_count, saturation_pct)
+

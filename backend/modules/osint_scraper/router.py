@@ -52,3 +52,4 @@ async def verify_sos_claim(
 ):
     """Anti-Fake-News Verifier: Corroborates disaster claim against physical sensor telemetry."""
     return cross_verify_weather_credibility(hazard, rain_mm, wind_kmh, discharge, seismic_mag)
+

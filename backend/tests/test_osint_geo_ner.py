@@ -71,3 +71,4 @@ async def test_social_harvester_stream():
         assert "urgency_score" in item
         assert "credibility_score" in item
         assert item["status"] == "PENDING"
+

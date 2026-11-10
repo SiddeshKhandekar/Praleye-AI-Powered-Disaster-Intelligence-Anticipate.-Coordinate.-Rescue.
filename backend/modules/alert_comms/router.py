@@ -55,3 +55,4 @@ async def create_offline_beacon(payload: Dict[str, Any] = Body(...)):
     med = payload.get("medical_need", "NONE")
     bat = payload.get("battery_pct", 75)
     return generate_compressed_offline_sos_beacon(lat, lon, headcount, med, bat)
+

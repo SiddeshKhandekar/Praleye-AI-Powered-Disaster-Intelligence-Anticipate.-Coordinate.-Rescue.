@@ -98,3 +98,4 @@ def test_iaf_helipad_validator():
     res_clear = validate_iaf_helipad_weather_ceiling(wind_gust_kmh=20.0, visibility_km=9.0)
     assert res_clear["airlift_status"] == "GREEN"
     assert res_clear["flyable"] is True
+

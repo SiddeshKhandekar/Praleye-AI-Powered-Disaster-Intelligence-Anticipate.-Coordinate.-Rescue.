@@ -106,3 +106,4 @@ async def harvest_osint_reports() -> List[Dict[str, Any]]:
         })
 
     return reports
+

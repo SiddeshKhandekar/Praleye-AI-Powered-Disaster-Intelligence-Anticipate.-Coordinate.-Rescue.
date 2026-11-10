@@ -110,3 +110,4 @@ async def get_evacuation_corridor(
 ):
     """Calculates road evacuation route to nearest safe zone."""
     return await get_osrm_evacuation_route(start_lat, start_lon, safe_zone_lat, safe_zone_lon)
+

@@ -148,3 +148,4 @@ async def seed_database_if_empty():
                     session.add(force)
             await session.commit()
             logger.info(f"Seeded {len(forces_data)} Defense and NDRF units.")
+

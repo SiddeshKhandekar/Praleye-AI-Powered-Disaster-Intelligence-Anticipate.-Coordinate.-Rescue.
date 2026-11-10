@@ -32,3 +32,4 @@ def generate_compressed_offline_sos_beacon(
         "acoustic_distress_freq_hz": 2800,  # 2.8kHz resonant search-and-rescue tone
         "decoded_preview": compact_payload
     }
+

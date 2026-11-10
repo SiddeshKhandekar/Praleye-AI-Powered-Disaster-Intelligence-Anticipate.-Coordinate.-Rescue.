@@ -49,3 +49,4 @@ async def fetch_gdacs_alerts() -> List[Dict[str, Any]]:
             "published": "Recent"
         }
     ]
+

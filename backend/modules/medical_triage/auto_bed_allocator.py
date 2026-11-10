@@ -133,3 +133,4 @@ def allocate_emergency_beds(
         "multi_hospital_split": len(allocations) > 1,
         "allocations": allocations
     }
+

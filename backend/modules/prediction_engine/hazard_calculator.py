@@ -155,3 +155,4 @@ def classify_risk_level(probabilities: Dict[str, float]) -> str:
     if max_p >= 25.0:
         return "MODERATE"
     return "LOW"
+

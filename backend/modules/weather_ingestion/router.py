@@ -22,3 +22,4 @@ async def get_disaster_bulletins():
     gdacs = await fetch_gdacs_alerts()
     imd = await fetch_imd_cwc_bulletins()
     return {"gdacs_alerts": gdacs, "national_bulletins": imd}
+

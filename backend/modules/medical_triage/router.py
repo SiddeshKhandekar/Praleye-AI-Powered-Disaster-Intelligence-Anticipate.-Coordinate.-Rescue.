@@ -91,3 +91,4 @@ async def auto_assign_emergency_beds(
     )
 
     return triage_result
+
