@@ -630,3 +630,4 @@ export const getMicroLocationsForDistrict = (districtId: string, districtName: s
     }
   ];
 };
+

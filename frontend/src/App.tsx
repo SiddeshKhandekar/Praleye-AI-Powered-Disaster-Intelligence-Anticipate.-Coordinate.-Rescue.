@@ -23,6 +23,7 @@ import { BroadcastAlertModal } from './components/modals/BroadcastAlertModal';
 import { MilitarySitrepModal } from './components/modals/MilitarySitrepModal';
 import { DisasterCaseStudiesModal } from './components/modals/DisasterCaseStudiesModal';
 import { CityWeatherDetailModal } from './components/modals/CityWeatherDetailModal';
+import { MicroLocationDetailModal } from './components/modals/MicroLocationDetailModal';
 
 export const App: React.FC = () => {
   const { 
@@ -107,6 +108,7 @@ export const App: React.FC = () => {
       <BroadcastAlertModal />
       <MilitarySitrepModal />
       <CityWeatherDetailModal />
+      <MicroLocationDetailModal />
       <DisasterCaseStudiesModal 
         isOpen={isCaseStudiesModalOpen} 
         onClose={() => setCaseStudiesModalOpen(false)} 

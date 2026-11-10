@@ -250,6 +250,72 @@ export const MapHoverCard: React.FC = () => {
           </div>
         </div>
       )}
+
+      {type === 'MICRO_LOCATION' && (
+        <div className="space-y-2">
+          <div className="flex items-center justify-between border-b border-slate-700/60 pb-1.5">
+            <div className="flex items-center gap-1.5 min-w-0">
+              <span className="text-base">📍</span>
+              <div className="truncate">
+                <span className="font-bold text-slate-100 tracking-wide block truncate">
+                  {data.name}
+                </span>
+                <span className="text-[10px] text-cyan-400 font-mono">
+                  {data.areaName}, {data.cityName}
+                </span>
+              </div>
+            </div>
+            <span
+              className={`px-1.5 py-0.5 rounded text-[10px] font-mono font-bold ${
+                data.vulnerability === 'EXTREME'
+                  ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
+                  : data.vulnerability === 'HIGH'
+                  ? 'bg-orange-500/20 text-orange-300 border border-orange-500/40'
+                  : 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+              }`}
+            >
+              {data.vulnerability}
+            </span>
+          </div>
+
+          <div className="grid grid-cols-2 gap-1.5 font-mono text-[11px] bg-slate-900/60 p-2 rounded border border-slate-800">
+            <div>
+              <span className="text-slate-400 block text-[9px] uppercase">Elevation</span>
+              <span className="text-slate-200 font-bold">{data.elevation_m}m MSL</span>
+            </div>
+            <div>
+              <span className="text-slate-400 block text-[9px] uppercase">Est. Flood Depth</span>
+              <span className="text-rose-400 font-bold">{data.flood_depth_est_cm} cm</span>
+            </div>
+            <div>
+              <span className="text-slate-400 block text-[9px] uppercase">Water Sensor</span>
+              <span
+                className={`font-bold ${
+                  data.live_water_sensor_status === 'OVERFLOW'
+                    ? 'text-rose-400 animate-pulse'
+                    : data.live_water_sensor_status === 'ALERT'
+                    ? 'text-amber-400'
+                    : 'text-emerald-400'
+                }`}
+              >
+                ● {data.live_water_sensor_status}
+              </span>
+            </div>
+            <div>
+              <span className="text-slate-400 block text-[9px] uppercase">Evac Priority</span>
+              <span className="text-amber-300 font-bold">{data.evac_priority.replace('P1_', '')}</span>
+            </div>
+          </div>
+
+          <div className="text-[10px] text-slate-300 bg-slate-950/70 p-1.5 rounded border border-slate-800/80 line-clamp-2 italic">
+            "{data.waterlogging_history}"
+          </div>
+
+          <div className="text-[10px] text-cyan-400 font-mono text-center pt-0.5">
+            Click chowk dot to inspect full dialog →
+          </div>
+        </div>
+      )}
     </div>
   );
 };

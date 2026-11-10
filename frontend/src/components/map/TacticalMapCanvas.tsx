@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import maplibregl from 'maplibre-gl';
 import { usePraleyeStore } from '../../store/usePraleyeStore';
 import { MapStyleTheme, DistrictHazardFeature } from '../../types/praleye.types';
+import { getMicroLocationsForDistrict, MicroLocationNode } from '../../services/microLocationsData';
 
 export const getMapStyle = (theme: MapStyleTheme): any => {
   const apiKey = (import.meta as any).env?.VITE_STADIA_API_KEY || '';
@@ -155,6 +156,7 @@ export const TacticalMapCanvas: React.FC = () => {
     setSelectedHospital,
     setHoveredEntity,
     setCityDetailModalOpen,
+    setSelectedMicroLocation,
     flyTo
   } = usePraleyeStore();
 
@@ -584,6 +586,71 @@ export const TacticalMapCanvas: React.FC = () => {
           .setLngLat([d.geometry.coordinates[0], d.geometry.coordinates[1]])
           .addTo(map.current!);
         markersRef.current.push(marker);
+      });
+    }
+
+    // 1.B Micro-Location Chowks & Localities (Rendered when zoomed in >= 8.5)
+    if (currentZoom >= 8.5 && (activeLayers.has('FLOOD_GRID') || mode === 'MODE_1_PREDICTION')) {
+      // Find districts within reasonable distance or visible area
+      districts.forEach((d) => {
+        const microLocs = getMicroLocationsForDistrict(
+          d.properties.district_id,
+          d.properties.name,
+          d.properties.state,
+          d.geometry.coordinates[1],
+          d.geometry.coordinates[0]
+        );
+
+        microLocs.forEach((loc) => {
+          const dotEl = document.createElement('div');
+          const dotColor =
+            loc.vulnerability === 'EXTREME'
+              ? '#EF4444'
+              : loc.vulnerability === 'HIGH'
+              ? '#F97316'
+              : loc.vulnerability === 'MODERATE'
+              ? '#F59E0B'
+              : '#10B981';
+
+          dotEl.className = 'group relative flex items-center justify-center cursor-pointer select-none';
+          dotEl.style.width = '20px';
+          dotEl.style.height = '20px';
+
+          // Micro dot point with pulse aura
+          dotEl.innerHTML = `
+            <div class="relative w-3.5 h-3.5 rounded-full transition-transform duration-200 group-hover:scale-150 flex items-center justify-center shadow-lg"
+                 style="background-color: ${dotColor}; border: 1.5px solid #ffffff; box-shadow: 0 0 8px ${dotColor};">
+              <div class="w-1.5 h-1.5 rounded-full bg-white opacity-80"></div>
+            </div>
+            ${
+              loc.vulnerability === 'EXTREME'
+                ? `<div class="absolute -inset-1 rounded-full border border-rose-500/60 radar-ripple pointer-events-none"></div>`
+                : ''
+            }
+          `;
+
+          // On hover: Show popup tooltip
+          dotEl.onmouseenter = (e) => {
+            setHoveredEntity({
+              type: 'MICRO_LOCATION',
+              data: loc,
+              x: e.clientX,
+              y: e.clientY
+            });
+          };
+          dotEl.onmouseleave = () => setHoveredEntity(null);
+
+          // On click: Open detail dialog
+          dotEl.onclick = (e) => {
+            e.stopPropagation();
+            setSelectedMicroLocation(loc);
+          };
+
+          const dotMarker = new maplibregl.Marker({ element: dotEl })
+            .setLngLat([loc.lon, loc.lat])
+            .addTo(map.current!);
+          markersRef.current.push(dotMarker);
+        });
       });
     }
 
