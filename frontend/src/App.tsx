@@ -18,6 +18,7 @@ import { HospitalCommandView } from './components/dashboards/HospitalCommandView
 import { EmergencyBedAssignModal } from './components/modals/EmergencyBedAssignModal';
 import { BroadcastAlertModal } from './components/modals/BroadcastAlertModal';
 import { MilitarySitrepModal } from './components/modals/MilitarySitrepModal';
+import { DisasterCaseStudiesModal } from './components/modals/DisasterCaseStudiesModal';
 
 export const App: React.FC = () => {
   const { 
@@ -26,7 +27,9 @@ export const App: React.FC = () => {
     setOsintReports, 
     setHospitals, 
     setSafeZones, 
-    setForces 
+    setForces,
+    isCaseStudiesModalOpen,
+    setCaseStudiesModalOpen
   } = usePraleyeStore();
 
   useEffect(() => {
@@ -90,6 +93,10 @@ export const App: React.FC = () => {
       <EmergencyBedAssignModal />
       <BroadcastAlertModal />
       <MilitarySitrepModal />
+      <DisasterCaseStudiesModal 
+        isOpen={isCaseStudiesModalOpen} 
+        onClose={() => setCaseStudiesModalOpen(false)} 
+      />
     </div>
   );
 };

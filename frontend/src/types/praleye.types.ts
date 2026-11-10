@@ -4,6 +4,15 @@ export type OperationalMode =
   | 'MODE_3_SAFE_ZONES'
   | 'MODE_4_TRIAGE';
 
+export type MapStyleTheme =
+  | 'STADIA_ALIDADE_SMOOTH_DARK'
+  | 'STADIA_OUTDOORS'
+  | 'STADIA_SATELLITE'
+  | 'STADIA_OSM_BRIGHT'
+  | 'OPENFREEMAP_DARK'
+  | 'ESRI_SATELLITE'
+  | 'CARTO_DARK_KEYLESS';
+
 export type DashboardView =
   | 'COMMAND_HUD'
   | 'SUPER_ADMIN'
