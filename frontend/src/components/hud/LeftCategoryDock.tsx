@@ -7,13 +7,14 @@ import {
   Flame,
   Anchor,
   BellRing,
-  FileText
+  FileText,
+  History
 } from 'lucide-react';
 import { usePraleyeStore } from '../../store/usePraleyeStore';
 import { DashboardView } from '../../types/praleye.types';
 
 export const LeftCategoryDock: React.FC = () => {
-  const { activeView, setActiveView, setAlertModalOpen, setSitrepModalOpen } = usePraleyeStore();
+  const { activeView, setActiveView, setAlertModalOpen, setSitrepModalOpen, setCaseStudiesModalOpen } = usePraleyeStore();
 
   const views: { id: DashboardView; label: string; icon: any }[] = [
     { id: 'COMMAND_HUD', label: 'Tactical Map', icon: Compass },
@@ -51,6 +52,17 @@ export const LeftCategoryDock: React.FC = () => {
 
       {/* Quick Action Triggers */}
       <div className="flex flex-col items-center space-y-3 pt-4 border-t border-white/10">
+        <button
+          onClick={() => setCaseStudiesModalOpen(true)}
+          className="p-2.5 rounded-lg text-cyan-400 hover:bg-cyan-500/20 hover:text-cyan-300 transition-all relative group"
+          title="Historical Disasters & Prevention Blueprints"
+        >
+          <History className="w-5 h-5" />
+          <span className="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-2 py-1 bg-obsidian-900 border border-white/10 rounded text-[10px] font-semibold text-cyan-300 whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-50">
+            Case Studies & Prevention
+          </span>
+        </button>
+
         <button
           onClick={() => setAlertModalOpen(true)}
           className="p-2.5 rounded-lg text-amber-400 hover:bg-amber-500/20 hover:text-amber-300 transition-all relative group"

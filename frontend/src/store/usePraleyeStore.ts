@@ -64,6 +64,8 @@ interface PraleyeStore {
   setTriageModalOpen: (open: boolean) => void;
   isSitrepModalOpen: boolean;
   setSitrepModalOpen: (open: boolean) => void;
+  isCaseStudiesModalOpen: boolean;
+  setCaseStudiesModalOpen: (open: boolean) => void;
 }
 
 export const usePraleyeStore = create<PraleyeStore>((set) => ({
@@ -129,4 +131,6 @@ export const usePraleyeStore = create<PraleyeStore>((set) => ({
   setTriageModalOpen: (isTriageModalOpen) => set({ isTriageModalOpen }),
   isSitrepModalOpen: false,
   setSitrepModalOpen: (isSitrepModalOpen) => set({ isSitrepModalOpen }),
+  isCaseStudiesModalOpen: false,
+  setCaseStudiesModalOpen: (isCaseStudiesModalOpen) => set({ isCaseStudiesModalOpen }),
 }));
