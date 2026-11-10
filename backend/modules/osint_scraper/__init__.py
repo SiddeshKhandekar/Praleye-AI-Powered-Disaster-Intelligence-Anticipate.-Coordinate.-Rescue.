@@ -1,0 +1,2 @@
+"""OSINT Scraper Module"""
+

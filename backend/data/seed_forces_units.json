@@ -1,0 +1,58 @@
+[
+  {
+    "id": "UNIT-NDRF-01-PUN",
+    "unit_name": "5th NDRF Battalion - Quick Response Team Pune",
+    "branch": "NDRF",
+    "district_id": "IN-MH-PUN",
+    "lat": 18.5300,
+    "lon": 73.8500,
+    "personnel_count": 45,
+    "equipment": "8 Inflatable motorized rescue boats, deep-diving kits, satellite comms",
+    "status": "DEPLOYED"
+  },
+  {
+    "id": "UNIT-ARMY-HADR-WAY",
+    "unit_name": "122 Infantry Battalion (TA) MADRAS - Wayanad HADR Column",
+    "branch": "ARMY",
+    "district_id": "IN-KL-WAY",
+    "lat": 11.6000,
+    "lon": 76.1000,
+    "personnel_count": 60,
+    "equipment": "Bailey bridge engineering set, earth movers, tactical satellite link",
+    "status": "DEPLOYED"
+  },
+  {
+    "id": "UNIT-IAF-SAR-DEH",
+    "unit_name": "No. 117 Helicopter Unit IAF (Mi-17 V5 SAR)",
+    "branch": "IAF",
+    "district_id": "IN-UT-DEH",
+    "lat": 30.1897,
+    "lon": 78.1803,
+    "personnel_count": 25,
+    "equipment": "4 Mi-17 V5 helicopters with rescue winches & forward thermal FLIR",
+    "status": "STANDBY"
+  },
+  {
+    "id": "UNIT-FIRE-SDRF-CHE",
+    "unit_name": "Tamil Nadu Fire & Rescue Services (TNFRS) Flood Division",
+    "branch": "FIRE",
+    "district_id": "IN-TN-CHE",
+    "lat": 13.0700,
+    "lon": 80.2600,
+    "personnel_count": 50,
+    "equipment": "High-capacity de-watering pumps, 12 flood rescue rafts, drone searchlights",
+    "status": "DEPLOYED"
+  },
+  {
+    "id": "UNIT-NDRF-03-BHU",
+    "unit_name": "3rd NDRF Battalion Mundali - Odisha Cyclone Response",
+    "branch": "NDRF",
+    "district_id": "IN-OD-KHO",
+    "lat": 20.3000,
+    "lon": 85.8000,
+    "personnel_count": 40,
+    "equipment": "Tree cutters, gas cutters, emergency field hospital tent, satellite beacon",
+    "status": "STANDBY"
+  }
+]
+

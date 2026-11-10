@@ -1,0 +1,283 @@
+[
+  {
+    "id": "IN-MH-PUN",
+    "name": "Pune",
+    "state": "Maharashtra",
+    "lat": 18.5204,
+    "lon": 73.8567,
+    "slope_deg": 12.5,
+    "elevation_m": 560.0,
+    "population": 9429408
+  },
+  {
+    "id": "IN-MH-MUM",
+    "name": "Mumbai Suburban",
+    "state": "Maharashtra",
+    "lat": 19.0760,
+    "lon": 72.8777,
+    "slope_deg": 4.2,
+    "elevation_m": 14.0,
+    "population": 12442373
+  },
+  {
+    "id": "IN-KL-WAY",
+    "name": "Wayanad",
+    "state": "Kerala",
+    "lat": 11.6854,
+    "lon": 76.1320,
+    "slope_deg": 38.5,
+    "elevation_m": 700.0,
+    "population": 817420
+  },
+  {
+    "id": "IN-KL-IDU",
+    "name": "Idukki",
+    "state": "Kerala",
+    "lat": 9.8500,
+    "lon": 76.9700,
+    "slope_deg": 35.0,
+    "elevation_m": 1200.0,
+    "population": 1108974
+  },
+  {
+    "id": "IN-KL-EKM",
+    "name": "Ernakulam",
+    "state": "Kerala",
+    "lat": 9.9816,
+    "lon": 76.2999,
+    "slope_deg": 3.0,
+    "elevation_m": 4.0,
+    "population": 3282388
+  },
+  {
+    "id": "IN-UT-CHA",
+    "name": "Chamoli",
+    "state": "Uttarakhand",
+    "lat": 30.4243,
+    "lon": 79.3242,
+    "slope_deg": 42.0,
+    "elevation_m": 2500.0,
+    "population": 391605
+  },
+  {
+    "id": "IN-UT-DEH",
+    "name": "Dehradun",
+    "state": "Uttarakhand",
+    "lat": 30.3165,
+    "lon": 78.0322,
+    "slope_deg": 18.0,
+    "elevation_m": 640.0,
+    "population": 1696694
+  },
+  {
+    "id": "IN-OD-PUR",
+    "name": "Puri",
+    "state": "Odisha",
+    "lat": 19.8135,
+    "lon": 85.8312,
+    "slope_deg": 2.1,
+    "elevation_m": 10.0,
+    "population": 1698730
+  },
+  {
+    "id": "IN-OD-KHO",
+    "name": "Khurda",
+    "state": "Odisha",
+    "lat": 20.1809,
+    "lon": 85.6200,
+    "slope_deg": 6.5,
+    "elevation_m": 45.0,
+    "population": 1874685
+  },
+  {
+    "id": "IN-WB-KOL",
+    "name": "Kolkata",
+    "state": "West Bengal",
+    "lat": 22.5726,
+    "lon": 88.3639,
+    "slope_deg": 1.5,
+    "elevation_m": 9.0,
+    "population": 4496694
+  },
+  {
+    "id": "IN-WB-DAR",
+    "name": "Darjeeling",
+    "state": "West Bengal",
+    "lat": 27.0410,
+    "lon": 88.2663,
+    "slope_deg": 39.0,
+    "elevation_m": 2042.0,
+    "population": 1846823
+  },
+  {
+    "id": "IN-TN-CHE",
+    "name": "Chennai",
+    "state": "Tamil Nadu",
+    "lat": 13.0827,
+    "lon": 80.2707,
+    "slope_deg": 2.0,
+    "elevation_m": 6.0,
+    "population": 7088003
+  },
+  {
+    "id": "IN-TN-CBE",
+    "name": "Coimbatore",
+    "state": "Tamil Nadu",
+    "lat": 11.0168,
+    "lon": 76.9558,
+    "slope_deg": 8.0,
+    "elevation_m": 411.0,
+    "population": 3458045
+  },
+  {
+    "id": "IN-GJ-AHM",
+    "name": "Ahmedabad",
+    "state": "Gujarat",
+    "lat": 23.0225,
+    "lon": 72.5714,
+    "slope_deg": 2.5,
+    "elevation_m": 53.0,
+    "population": 7214225
+  },
+  {
+    "id": "IN-GJ-KUC",
+    "name": "Kutch",
+    "state": "Gujarat",
+    "lat": 23.2420,
+    "lon": 69.6669,
+    "slope_deg": 4.5,
+    "elevation_m": 15.0,
+    "population": 2092371
+  },
+  {
+    "id": "IN-AS-KAM",
+    "name": "Kamrup Metropolitan",
+    "state": "Assam",
+    "lat": 26.1445,
+    "lon": 91.7362,
+    "slope_deg": 9.0,
+    "elevation_m": 55.0,
+    "population": 1253938
+  },
+  {
+    "id": "IN-AS-DIB",
+    "name": "Dibrugarh",
+    "state": "Assam",
+    "lat": 27.4728,
+    "lon": 94.9120,
+    "slope_deg": 3.0,
+    "elevation_m": 108.0,
+    "population": 1326335
+  },
+  {
+    "id": "IN-BR-PAT",
+    "name": "Patna",
+    "state": "Bihar",
+    "lat": 25.5941,
+    "lon": 85.1376,
+    "slope_deg": 1.8,
+    "elevation_m": 53.0,
+    "population": 5838465
+  },
+  {
+    "id": "IN-RJ-JAI",
+    "name": "Jaipur",
+    "state": "Rajasthan",
+    "lat": 26.9124,
+    "lon": 75.7873,
+    "slope_deg": 5.0,
+    "elevation_m": 431.0,
+    "population": 6626178
+  },
+  {
+    "id": "IN-RJ-JOD",
+    "name": "Jodhpur",
+    "state": "Rajasthan",
+    "lat": 26.2389,
+    "lon": 73.0243,
+    "slope_deg": 4.0,
+    "elevation_m": 231.0,
+    "population": 3687002
+  },
+  {
+    "id": "IN-DL-DEL",
+    "name": "New Delhi",
+    "state": "Delhi",
+    "lat": 28.6139,
+    "lon": 77.2090,
+    "slope_deg": 2.0,
+    "elevation_m": 216.0,
+    "population": 16787941
+  },
+  {
+    "id": "IN-KA-BLR",
+    "name": "Bengaluru Urban",
+    "state": "Karnataka",
+    "lat": 12.9716,
+    "lon": 77.5946,
+    "slope_deg": 6.0,
+    "elevation_m": 920.0,
+    "population": 9621551
+  },
+  {
+    "id": "IN-TG-HYD",
+    "name": "Hyderabad",
+    "state": "Telangana",
+    "lat": 17.3850,
+    "lon": 78.4867,
+    "slope_deg": 7.0,
+    "elevation_m": 542.0,
+    "population": 6809970
+  },
+  {
+    "id": "IN-AP-VIS",
+    "name": "Visakhapatnam",
+    "state": "Andhra Pradesh",
+    "lat": 17.6868,
+    "lon": 83.2185,
+    "slope_deg": 14.0,
+    "elevation_m": 45.0,
+    "population": 4290589
+  },
+  {
+    "id": "IN-HP-SHI",
+    "name": "Shimla",
+    "state": "Himachal Pradesh",
+    "lat": 31.1048,
+    "lon": 77.1734,
+    "slope_deg": 41.0,
+    "elevation_m": 2205.0,
+    "population": 814010
+  },
+  {
+    "id": "IN-HP-MAN",
+    "name": "Mandi",
+    "state": "Himachal Pradesh",
+    "lat": 31.7087,
+    "lon": 76.9320,
+    "slope_deg": 38.0,
+    "elevation_m": 760.0,
+    "population": 999777
+  },
+  {
+    "id": "IN-UP-LUK",
+    "name": "Lucknow",
+    "state": "Uttar Pradesh",
+    "lat": 26.8467,
+    "lon": 80.9462,
+    "slope_deg": 2.0,
+    "elevation_m": 123.0,
+    "population": 4589838
+  },
+  {
+    "id": "IN-JK-SRI",
+    "name": "Srinagar",
+    "state": "Jammu and Kashmir",
+    "lat": 34.0837,
+    "lon": 74.7973,
+    "slope_deg": 15.0,
+    "elevation_m": 1585.0,
+    "population": 1236829
+  }
+]
+
