@@ -41,6 +41,7 @@ const INDIAN_LANGS = [
 
 export const TopFilterSearchBar: React.FC = () => {
   const {
+    activeView,
     activeLayers,
     toggleLayer,
     flyTo,
@@ -151,27 +152,29 @@ export const TopFilterSearchBar: React.FC = () => {
         </div>
       </form>
 
-      {/* Layer Toggle Pills & Controls */}
+      {/* Layer Toggle Pills & Controls - Visible only on COMMAND_HUD */}
       <div className="flex items-center space-x-2">
-        <div className="hidden xl:flex items-center space-x-1.5 mr-2">
-          {layers.map(layer => {
-            const Icon = layer.icon;
-            const isActive = activeLayers.has(layer.id);
-            return (
-              <button
-                key={layer.id}
-                onClick={() => toggleLayer(layer.id)}
-                className={`flex items-center space-x-1.5 px-2.5 py-1 rounded text-xs font-medium transition-all ${isActive
-                  ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
-                  : 'bg-white/5 text-slate-400 border border-white/5 hover:bg-white/10'
-                  }`}
-              >
-                <Icon className="w-3.5 h-3.5" />
-                <span>{layer.label}</span>
-              </button>
-            );
-          })}
-        </div>
+        {activeView === 'COMMAND_HUD' && (
+          <div className="hidden xl:flex items-center space-x-1.5 mr-2">
+            {layers.map(layer => {
+              const Icon = layer.icon;
+              const isActive = activeLayers.has(layer.id);
+              return (
+                <button
+                  key={layer.id}
+                  onClick={() => toggleLayer(layer.id)}
+                  className={`flex items-center space-x-1.5 px-2.5 py-1 rounded text-xs font-medium transition-all ${isActive
+                    ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
+                    : 'bg-white/5 text-slate-400 border border-white/5 hover:bg-white/10'
+                    }`}
+                >
+                  <Icon className="w-3.5 h-3.5" />
+                  <span>{layer.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        )}
 
         {/* Map Theme Selector */}
         <div className="flex items-center bg-obsidian-900 border border-white/10 rounded px-2 py-1 text-xs">

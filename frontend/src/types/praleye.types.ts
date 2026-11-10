@@ -21,7 +21,7 @@ export type DashboardView =
 
 export type MapVizMode = 'HYBRID' | 'HEATMAP' | 'PINS';
 
-export type HoveredEntityType = 'DISTRICT' | 'SOS' | 'HOSPITAL' | 'SHELTER' | 'FORCE';
+export type HoveredEntityType = 'DISTRICT' | 'SOS' | 'HOSPITAL' | 'SHELTER' | 'FORCE' | 'MICRO_LOCATION';
 
 export interface HoveredEntity {
   type: HoveredEntityType;

@@ -347,3 +347,4 @@ export const CityWeatherDetailModal: React.FC = () => {
     </div>
   );
 };
+

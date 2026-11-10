@@ -42,6 +42,8 @@ interface PraleyeStore {
   // Selected Entities
   selectedDistrict: DistrictHazardFeature | null;
   setSelectedDistrict: (district: DistrictHazardFeature | null) => void;
+  selectedMicroLocation: any | null;
+  setSelectedMicroLocation: (loc: any | null) => void;
   selectedSos: OsintReport | null;
   setSelectedSos: (report: OsintReport | null) => void;
   selectedHospital: HospitalNode | null;
@@ -119,6 +121,8 @@ export const usePraleyeStore = create<PraleyeStore>((set) => ({
 
   selectedDistrict: null,
   setSelectedDistrict: (selectedDistrict) => set({ selectedDistrict }),
+  selectedMicroLocation: null,
+  setSelectedMicroLocation: (selectedMicroLocation) => set({ selectedMicroLocation }),
   selectedSos: null,
   setSelectedSos: (selectedSos) => set({ selectedSos }),
   selectedHospital: null,
