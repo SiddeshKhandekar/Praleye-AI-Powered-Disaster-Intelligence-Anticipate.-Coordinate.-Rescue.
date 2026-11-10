@@ -1,13 +1,13 @@
 import React from 'react';
-import { 
-  Compass, 
-  LayoutDashboard, 
-  ShieldAlert, 
-  Building2, 
-  Flame, 
-  Anchor, 
-  BellRing, 
-  FileText 
+import {
+  Compass,
+  LayoutDashboard,
+  ShieldAlert,
+  Building2,
+  Flame,
+  Anchor,
+  BellRing,
+  FileText
 } from 'lucide-react';
 import { usePraleyeStore } from '../../store/usePraleyeStore';
 import { DashboardView } from '../../types/praleye.types';
@@ -33,11 +33,10 @@ export const LeftCategoryDock: React.FC = () => {
             <button
               key={v.id}
               onClick={() => setActiveView(v.id)}
-              className={`p-2.5 rounded-lg transition-all relative group ${
-                isActive 
-                  ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/50 shadow-md shadow-cyan-500/20' 
+              className={`p-2.5 rounded-lg transition-all relative group ${isActive
+                  ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/50 shadow-md shadow-cyan-500/20'
                   : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
-              }`}
+                }`}
               title={v.label}
             >
               <Icon className="w-5 h-5" />

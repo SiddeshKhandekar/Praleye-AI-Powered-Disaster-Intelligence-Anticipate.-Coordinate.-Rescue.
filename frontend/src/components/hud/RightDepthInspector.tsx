@@ -1,25 +1,25 @@
 import React, { useState } from 'react';
-import { 
-  BarChart3, 
-  Radio, 
-  Stethoscope, 
-  Bot, 
-  ChevronRight, 
-  ChevronLeft, 
-  AlertTriangle, 
-  CheckCircle2, 
-  Send 
+import {
+  BarChart3,
+  Radio,
+  Stethoscope,
+  Bot,
+  ChevronRight,
+  ChevronLeft,
+  AlertTriangle,
+  CheckCircle2,
+  Send
 } from 'lucide-react';
 import { usePraleyeStore } from '../../store/usePraleyeStore';
 import { apiClient } from '../../services/apiClient';
 
 export const RightDepthInspector: React.FC = () => {
-  const { 
-    selectedDistrict, 
-    osintReports, 
-    selectedSos, 
-    setSelectedSos, 
-    flyTo, 
+  const {
+    selectedDistrict,
+    osintReports,
+    selectedSos,
+    setSelectedSos,
+    flyTo,
     setTriageModalOpen,
     forces
   } = usePraleyeStore();
@@ -92,11 +92,10 @@ export const RightDepthInspector: React.FC = () => {
               <div className="space-y-3">
                 <div className="flex items-center justify-between pb-2 border-b border-white/10">
                   <h3 className="text-sm font-bold text-white">{selectedDistrict.properties.name}</h3>
-                  <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                    selectedDistrict.properties.composite_risk_level === 'CRITICAL' ? 'bg-red-500/20 text-red-400 border border-red-500/30' :
-                    selectedDistrict.properties.composite_risk_level === 'HIGH' ? 'bg-orange-500/20 text-orange-400' :
-                    selectedDistrict.properties.composite_risk_level === 'MODERATE' ? 'bg-amber-500/20 text-amber-400' : 'bg-emerald-500/20 text-emerald-400'
-                  }`}>
+                  <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${selectedDistrict.properties.composite_risk_level === 'CRITICAL' ? 'bg-red-500/20 text-red-400 border border-red-500/30' :
+                      selectedDistrict.properties.composite_risk_level === 'HIGH' ? 'bg-orange-500/20 text-orange-400' :
+                        selectedDistrict.properties.composite_risk_level === 'MODERATE' ? 'bg-amber-500/20 text-amber-400' : 'bg-emerald-500/20 text-emerald-400'
+                    }`}>
                     {selectedDistrict.properties.composite_risk_level}
                   </span>
                 </div>
@@ -111,7 +110,7 @@ export const RightDepthInspector: React.FC = () => {
                 {/* Mathematical Hazard Probabilities */}
                 <div className="bg-obsidian-950/80 p-3 rounded border border-white/10 space-y-2">
                   <div className="text-[11px] font-bold text-cyan-400">PHYSICAL HAZARD PROBABILITIES</div>
-                  
+
                   <div>
                     <div className="flex justify-between text-[10px] text-slate-400 mb-0.5">
                       <span>Flood (P_flood)</span>
@@ -179,23 +178,21 @@ export const RightDepthInspector: React.FC = () => {
               </div>
             )}
             {osintReports.map(report => (
-              <div 
+              <div
                 key={report.id}
                 onClick={() => {
                   setSelectedSos(report);
                   flyTo(report.lat, report.lon, 14);
                 }}
-                className={`p-3 rounded border cursor-pointer transition-all ${
-                  selectedSos?.id === report.id
+                className={`p-3 rounded border cursor-pointer transition-all ${selectedSos?.id === report.id
                     ? 'bg-red-950/50 border-red-500'
                     : 'bg-obsidian-950/60 border-white/10 hover:border-white/30'
-                }`}
+                  }`}
               >
                 <div className="flex items-center justify-between mb-1">
                   <span className="font-bold text-slate-300">{report.source}</span>
-                  <span className={`px-1.5 py-0.2 rounded text-[9px] font-bold ${
-                    report.urgency_label === 'CRITICAL' ? 'bg-red-500/30 text-red-400' : 'bg-amber-500/30 text-amber-400'
-                  }`}>
+                  <span className={`px-1.5 py-0.2 rounded text-[9px] font-bold ${report.urgency_label === 'CRITICAL' ? 'bg-red-500/30 text-red-400' : 'bg-amber-500/30 text-amber-400'
+                    }`}>
                     {report.urgency_label} ({report.urgency_score})
                   </span>
                 </div>

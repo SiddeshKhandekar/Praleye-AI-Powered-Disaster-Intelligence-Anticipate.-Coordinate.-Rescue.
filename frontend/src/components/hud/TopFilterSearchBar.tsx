@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  ShieldAlert, 
-  Search, 
-  CloudRain, 
-  Waves, 
-  Radio, 
-  Hospital, 
-  Activity, 
-  Users, 
-  Globe, 
-  Mic, 
-  MicOff 
+import {
+  ShieldAlert,
+  Search,
+  CloudRain,
+  Waves,
+  Radio,
+  Hospital,
+  Activity,
+  Users,
+  Globe,
+  Mic,
+  MicOff
 } from 'lucide-react';
 import { usePraleyeStore } from '../../store/usePraleyeStore';
 import { HazardLayerType } from '../../types/praleye.types';
@@ -31,16 +31,16 @@ const INDIAN_LANGS = [
 ];
 
 export const TopFilterSearchBar: React.FC = () => {
-  const { 
-    activeLayers, 
-    toggleLayer, 
-    flyTo, 
-    districts, 
-    language, 
-    setLanguage, 
-    setMode, 
-    setSitrepModalOpen, 
-    setAlertModalOpen 
+  const {
+    activeLayers,
+    toggleLayer,
+    flyTo,
+    districts,
+    language,
+    setLanguage,
+    setMode,
+    setSitrepModalOpen,
+    setAlertModalOpen
   } = usePraleyeStore();
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -83,7 +83,7 @@ export const TopFilterSearchBar: React.FC = () => {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (!searchQuery) return;
-    const match = districts.find(d => 
+    const match = districts.find(d =>
       d.properties.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       d.properties.state.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -150,11 +150,10 @@ export const TopFilterSearchBar: React.FC = () => {
               <button
                 key={layer.id}
                 onClick={() => toggleLayer(layer.id)}
-                className={`flex items-center space-x-1.5 px-2.5 py-1 rounded text-xs font-medium transition-all ${
-                  isActive 
-                    ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40' 
+                className={`flex items-center space-x-1.5 px-2.5 py-1 rounded text-xs font-medium transition-all ${isActive
+                    ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
                     : 'bg-white/5 text-slate-400 border border-white/5 hover:bg-white/10'
-                }`}
+                  }`}
               >
                 <Icon className="w-3.5 h-3.5" />
                 <span>{layer.label}</span>
@@ -166,8 +165,8 @@ export const TopFilterSearchBar: React.FC = () => {
         {/* 11-Language Selector */}
         <div className="flex items-center bg-obsidian-900 border border-white/10 rounded px-2 py-1 text-xs">
           <Globe className="w-3.5 h-3.5 text-slate-400 mr-1.5" />
-          <select 
-            value={language} 
+          <select
+            value={language}
             onChange={(e) => setLanguage(e.target.value)}
             className="bg-transparent text-slate-300 text-xs focus:outline-none cursor-pointer"
           >
@@ -182,11 +181,10 @@ export const TopFilterSearchBar: React.FC = () => {
         {/* Hands-Free Voice Mic */}
         <button
           onClick={toggleMic}
-          className={`p-1.5 rounded border transition-colors ${
-            isListening 
-              ? 'bg-red-500/30 border-red-500 text-red-400 animate-pulse' 
+          className={`p-1.5 rounded border transition-colors ${isListening
+              ? 'bg-red-500/30 border-red-500 text-red-400 animate-pulse'
               : 'bg-white/5 border-white/10 text-slate-400 hover:text-slate-200'
-          }`}
+            }`}
           title="Voice Command (11 Indian Languages)"
         >
           {isListening ? <Mic className="w-4 h-4" /> : <MicOff className="w-4 h-4" />}

@@ -1,13 +1,13 @@
 import { create } from 'zustand';
-import { 
-  OperationalMode, 
-  DashboardView, 
-  HazardLayerType, 
-  DistrictHazardFeature, 
-  OsintReport, 
-  HospitalNode, 
-  SafeZoneNode, 
-  ForceUnit 
+import {
+  OperationalMode,
+  DashboardView,
+  HazardLayerType,
+  DistrictHazardFeature,
+  OsintReport,
+  HospitalNode,
+  SafeZoneNode,
+  ForceUnit
 } from '../types/praleye.types';
 
 interface PraleyeStore {

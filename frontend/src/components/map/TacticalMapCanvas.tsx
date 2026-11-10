@@ -7,18 +7,18 @@ export const TacticalMapCanvas: React.FC = () => {
   const map = useRef<maplibregl.Map | null>(null);
   const markersRef = useRef<maplibregl.Marker[]>([]);
 
-  const { 
-    viewport, 
-    districts, 
-    osintReports, 
-    hospitals, 
-    safeZones, 
+  const {
+    viewport,
+    districts,
+    osintReports,
+    hospitals,
+    safeZones,
     forces,
     activeLayers,
     mode,
-    setSelectedDistrict, 
-    setSelectedSos, 
-    setSelectedHospital 
+    setSelectedDistrict,
+    setSelectedSos,
+    setSelectedHospital
   } = usePraleyeStore();
 
   // Initialize MapLibre GL
@@ -88,8 +88,8 @@ export const TacticalMapCanvas: React.FC = () => {
         const el = document.createElement('div');
         const level = d.properties.composite_risk_level;
         const color = level === 'CRITICAL' ? '#EF4444' :
-                      level === 'HIGH' ? '#F97316' :
-                      level === 'MODERATE' ? '#F59E0B' : '#10B981';
+          level === 'HIGH' ? '#F97316' :
+            level === 'MODERATE' ? '#F59E0B' : '#10B981';
 
         el.className = 'district-marker cursor-pointer transition-transform hover:scale-125';
         el.style.width = '24px';

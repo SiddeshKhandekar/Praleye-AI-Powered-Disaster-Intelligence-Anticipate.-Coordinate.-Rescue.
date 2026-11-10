@@ -1,22 +1,22 @@
-export type OperationalMode = 
-  | 'MODE_1_PREDICTION' 
-  | 'MODE_2_OSINT_RESCUE' 
-  | 'MODE_3_SAFE_ZONES' 
+export type OperationalMode =
+  | 'MODE_1_PREDICTION'
+  | 'MODE_2_OSINT_RESCUE'
+  | 'MODE_3_SAFE_ZONES'
   | 'MODE_4_TRIAGE';
 
-export type DashboardView = 
-  | 'COMMAND_HUD' 
-  | 'SUPER_ADMIN' 
-  | 'GOV_FORCES' 
+export type DashboardView =
+  | 'COMMAND_HUD'
+  | 'SUPER_ADMIN'
+  | 'GOV_FORCES'
   | 'HOSPITAL_NETWORK';
 
-export type HazardLayerType = 
-  | 'WEATHER_RADAR' 
-  | 'FLOOD_GRID' 
-  | 'SEISMIC_RINGS' 
-  | 'SOS_BEACONS' 
-  | 'SAFE_SHELTERS' 
-  | 'HOSPITAL_NODES' 
+export type HazardLayerType =
+  | 'WEATHER_RADAR'
+  | 'FLOOD_GRID'
+  | 'SEISMIC_RINGS'
+  | 'SOS_BEACONS'
+  | 'SAFE_SHELTERS'
+  | 'HOSPITAL_NODES'
   | 'DEFENSE_FORCES';
 
 export interface DistrictHazardFeature {

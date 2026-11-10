@@ -88,3 +88,4 @@ export const MilitarySitrepModal: React.FC = () => {
     </div>
   );
 };
+
