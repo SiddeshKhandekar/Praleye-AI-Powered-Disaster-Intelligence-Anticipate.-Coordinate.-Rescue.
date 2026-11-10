@@ -241,3 +241,4 @@ export const MapHoverCard: React.FC = () => {
     </div>
   );
 };
+

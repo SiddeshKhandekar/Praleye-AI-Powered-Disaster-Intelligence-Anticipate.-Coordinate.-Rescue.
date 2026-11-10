@@ -64,7 +64,7 @@ export const MapDataBriefingBar: React.FC = () => {
   };
 
   return (
-    <div className="absolute top-16 left-16 right-16 z-20 pointer-events-none flex flex-wrap items-center justify-between gap-2.5 font-mono text-xs">
+    <div className="absolute top-16 left-16 max-w-[calc(100vw-410px)] z-20 pointer-events-none flex flex-wrap items-center gap-2 font-mono text-xs">
       {/* Left Group: DEFCON Badge & Top Threat District Jump Pills */}
       <div className="flex flex-wrap items-center gap-2 pointer-events-auto">
         {/* DEFCON Status Chip */}

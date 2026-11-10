@@ -40,5 +40,32 @@ describe('usePraleyeStore HUD State Management', () => {
     store.setTimeOffsetHours(48);
     expect(usePraleyeStore.getState().timeOffsetHours).toBe(48);
   });
+
+  it('should toggle visualization modes between HYBRID, HEATMAP, and PINS', () => {
+    const store = usePraleyeStore.getState();
+    expect(store.vizMode).toBe('HYBRID');
+
+    store.setVizMode('HEATMAP');
+    expect(usePraleyeStore.getState().vizMode).toBe('HEATMAP');
+
+    store.setVizMode('PINS');
+    expect(usePraleyeStore.getState().vizMode).toBe('PINS');
+  });
+
+  it('should set and clear hovered entity state', () => {
+    const store = usePraleyeStore.getState();
+    expect(store.hoveredEntity).toBeNull();
+
+    store.setHoveredEntity({
+      type: 'DISTRICT',
+      data: { name: 'Wayanad' },
+      x: 100,
+      y: 200
+    });
+    expect(usePraleyeStore.getState().hoveredEntity?.type).toBe('DISTRICT');
+
+    store.setHoveredEntity(null);
+    expect(usePraleyeStore.getState().hoveredEntity).toBeNull();
+  });
 });
 

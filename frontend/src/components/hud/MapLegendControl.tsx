@@ -143,3 +143,4 @@ export const MapLegendControl: React.FC = () => {
     </div>
   );
 };
+

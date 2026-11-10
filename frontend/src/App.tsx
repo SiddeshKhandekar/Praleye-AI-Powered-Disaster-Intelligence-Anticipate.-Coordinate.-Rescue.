@@ -81,6 +81,15 @@ export const App: React.FC = () => {
       {/* 100vw x 100vh Full-Bleed Map Canvas */}
       <TacticalMapCanvas />
 
+      {/* Floating Tactical Hover Tooltip */}
+      <MapHoverCard />
+
+      {/* Ambient Live Data Briefing Bar */}
+      <MapDataBriefingBar />
+
+      {/* Interactive Map Symbology & Legend Control */}
+      <MapLegendControl />
+
       {/* 4-Edge Peripheral HUD Navigation Frame */}
       <TopFilterSearchBar />
       <BottomModeSwitcher />
